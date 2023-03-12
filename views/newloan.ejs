@@ -1,0 +1,123 @@
+<%- include('partials/header'); -%>
+<title>Lend | New Loan</title>
+<link href="./css/newloan.css" rel="stylesheet" type="text/css">
+    <section>
+        <h4 align="center">New Loan</h4>
+        <p align="center">Enter the details and terms of the loan you intend to give out.</p>
+        <div class="form-container">
+            <div id="form-wrapper" class="card">
+                <form action="" method="" id="paymentForm">
+                <!--form action="/new_loan" method="POST"-->
+                    <label for="name" class="form-items">
+                        <span class="form-title">Borrowers Name</span>
+                        <input type="text" name="borrowerName" id="name" class="input-field" placeholder="Borrower's Name" required>
+                    </label><br>
+                    <label for="email" class="form-items">
+                        <span class="form-title">Borrower's Email Address</span>
+                        <input type="email" name="borrowerEmail" id="email" class="input-field" placeholder="Borrower's Email Address" required>
+                    </label><br>
+                    <label for="mobile" class="form-items">
+                        <span class="form-title">Borrower's Phone Number</span>
+                        <input type="tel" name="borrowerMobile" id="mobile" class="input-field" placeholder="Borrower's Phone Number" required>
+                    </label><br>
+                    <label for="loan-amount" class="form-items">
+                        <span class="form-title">Loan Amount (NGN‎)</span>
+                        <!--span class="form-title">Loan Amount (₦‎)</span-->
+                        <input type="number" name="loanAmount" max="100000000" id="loan-amount" class="input-field" placeholder="Loan Amount" required>
+                    </label><br>
+                    <label for="loan-interest" class="form-items">
+                        <span class="form-title">Interest on Loan (%)</span>
+                        <input type="number" name="loanInterest" min="0" max="100" id="loan-interest" class="input-field" placeholder="Interest on loan" required>
+                    </label><br>
+                    <label for="repayment-method" class="form-items">
+                        <span class="form-title">Repayment Method</span>
+                        <select name="repaymentMethod" id="repayment-method" class="input-field" onchange="displayOneOffDiv('one-off-deets', 'installmental-deets', this)">
+                            <option id="one-off" value="One time repayment" class="input-field">One time repayment</option>
+                            <option id="installmental" value="Installmental repayment" class="input-field">Installmental repayment</option>
+                        </select>
+                    </label><br>  
+                    <div id="one-off-deets">
+                        <label id="repayment-date" class="form-items">
+                            <span class="form-title">Expected Repayment Date</span>
+                            <input type="date" name="repaymentDate" id="repayment-date" class="input-field">
+                        </label><br>
+                    </div>
+                    <div id="installmental-deets">
+                        <label id="repayment-duration">
+                        <span class="form-title">Expected Repayment Duration</span>
+                        <div>
+                            <input type="number" name="repaymentDurationNum" id="repayment-duration-num" class="input-field" placeholder="Repayment Duration">
+                            <select id="repayment-duration-alp" class="input-field" name="repaymentDurationAlp" onchange="displayFreq('daily-freq', 'weekly-freq', 'monthly-freq', this)">
+                                <option id="days">Day(s)</option>
+                                <option id="weeks">Week(s)</option>
+                                <option id="months">Month(s)</option>
+                                <option id="years">Year(s)</option>
+                            </select>
+                        </div>
+                        </label><br>
+                        <label for="repayment-frequency" id="frequency">
+                            <span class="form-title">Expected Repayment Frequency</span>
+                            <select id="repayment-frequency" name="repaymentFrequency" class="input-field">
+                                <option id="daily-freq">Daily</option>
+                                <option id="weekly-freq">Weekly</option>
+                                <option id="monthly-freq">Monthly</option>
+                                <!--option>Yearly</option-->
+                            </select>
+                        </label><br> 
+                    </div> 
+                    <div id="btn-wrapper" class="btn-wrapper">
+                        <button type="submit" id="newloan">Submit</button> 
+                        <a href="" onclick="payWithPaystack()" id="pay-btn">Submit</a> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript">
+    //UX rules
+    const log = console.log;
+    const form = document.querySelector('form');
+    const oneOff = document.getElementById('one-off').selected;
+   //const installmental = document.getElementById('installmental').selected;
+    
+    if (oneOff) {
+        document.getElementById('installmental-deets').style.display = 'none';
+    }
+    //log(repaymentType);
+    log(oneOff);
+
+    function displayOneOffDiv(id, id2, elementValue) {
+        if (elementValue.value === 'One time repayment') {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(id2).style.display = 'none';
+        }
+        else {
+            document.getElementById(id).style.display = 'none';
+            document.getElementById(id2).style.display = 'block';
+        }
+    
+    }
+
+    function displayFreq(id, id2, id3, elementValue) {
+        if (elementValue.value === 'Day(s)') {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(id2).style.display = 'none';
+            document.getElementById(id3).style.display = 'none';
+        }
+         else if (elementValue.value === 'Week(s)') {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(id2).style.display = 'block';
+            document.getElementById(id3).style.display = 'none';
+        }
+        else {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(id2).style.display = 'block';
+            document.getElementById(id3).style.display = 'block';
+        }
+    
+    }
+
+</script>
+<%- include('partials/paystack_pop_up'); -%>
+</html>

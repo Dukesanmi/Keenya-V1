@@ -1,0 +1,100 @@
+<%- include('partials/authheader'); -%>
+<title>Analysis Report</title>
+<link href="./css/result.css" rel="stylesheet" type="text/css">
+<section>
+	<% if (report.atr_level === "Very Strong") { %>
+        <div class="result">
+            <h4 style="font-size: 24px;">${name}’s financial ability to repay your loan is</h4>
+            <h4 id="grade" class="green">Very Strong</h4>
+        </div>
+        <div class="illustration">
+            <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Toggle-bro.png" alt="v.strong">
+        </div>
+        <div class="remarks">
+            <p id="vstrong">We have assessed ${borrowername}'s financial ability to repay your loan of ${loanamount} on the terms you specified and we have confirmed based on ${borrowername}'s financial history that they have a very strong financial ability to repay this loan. So we therefore declare them financially capable of repaying this loan in and be can be extended this loan.</p>
+        </div>
+        <div class="btns">
+            <a href="">Go ahead with loan</a>
+            <a href="/" id="back-home">Return Home</a>
+        </div>
+    <% } else if (report.atr_level === "Strong") { %>
+        <div class="result">
+            <h4 style="font-size: 24px;">${name}’s financial ability to repay your loan is</h4>
+            <h4 id="grade" class="green">Strong</h4>
+        </div>
+        <div class="illustration">
+            <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Toggle-bro.png" alt="v.strong">
+        </div>
+        <div class="remarks">
+            <p id="strong">We have assessed ${borrowername}'s financial ability to repay your loan of ${loanamount} in line with the terms you specified and we have confirmed based on ${borrowername}'s financial history that they have a strong financial ability to repay this loan. They can be extended this loan.</p>
+        </div>
+        <div class="btns">
+            <a href="">Go ahead with loan</a>
+            <a href="/" id="back-home">Return Home</a>
+        </div>
+    <% } else if (report.atr_level === "Fair") { %>
+        <div class="result">
+            <h4 style="font-size: 24px;">${name}’s financial ability to repay your loan is</h4>
+            <!--h4 id="grade" class="amber">Fair</h4-->
+        </div>
+        <div class="illustration">
+            <!--img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628470/Keenya/Reading_list-pana.png" alt="fair"-->
+        </div>
+        <div class="remarks">
+            <p id="fair">We have assessed ${borrowername}'s financial ability to repay your loan of ${loanamount} on the terms you specified and we have determined that their ability to repay this loan is fair and recommend you be careful and go ahead and loan them these funds if they have provided you with a befitting collateral or you have other reasons to trust that this person will repay the loan.</p>
+        </div>
+        <div class="btns">
+            <a href="">Go ahead with loan</a>
+            <a href="/" id="back-home">Return Home</a>
+        </div>
+
+    <% } else if (report.atr_level === "Weak") { %>
+        <div class="result">
+            <h4 style="font-size: 24px;">${name}’s financial ability to repay your loan is</h4>
+            <h4 id="grade" class="red">Weak</h4-->
+        </div>
+        <div class="illustration">
+            <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+        </div>
+        <div class="remarks">
+            <p id="weak">We have assessed ${borrowername}'s financial ability to repay your loan of ${loanamount} on the terms you specified and we have determined that their ability to repay this loan is weak. This means that they do not have the financial capacity to repay this loan. We recommend you do not extend them this loan. However if you wish to still go ahead and loan them the funds, it should be because they have provided a good-quality collateral (find out what a good-quality collateral is) or you have other reasons to trust that this person will repay the loan.</p>
+        </div>
+        <div class="btns">
+            <a href="/" id="back-home">Return Home</a>
+            <a href="">Go ahead with loan</a>
+        </div>
+    <% } else if (report.atr_level === "Very Weak") { %>
+        <div class="result">
+            <h4 style="font-size: 24px;">${name}’s financial ability to repay your loan is</h4>
+            <h4 id="grade" class="red">Very Weak</h4-->
+        </div>
+        <div class="illustration">
+            <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+        </div>
+        <div class="remarks">
+            <p id="vweak">We have assessed ${borrowername}'s financial ability to repay your loan of ${loanamount} on the terms you specified and we have determined that their ability to repay this loan is very weak. This means that they do not have the financial capacity to repay this loan. We strongly recommend you do not extend them this loan. However if you wish to still go ahead and loan them the funds, it should be because they have provided a good-quality collateral (find out what a good-quality collateral is) or you have other reasons to trust that this person will repay the loan.</p>
+        </div>
+        <div class="btns">
+            <a href="/" id="back-home">Return Home</a>
+            <a href="">Go ahead with loan</a>
+        </div>
+                    
+    <% } else if (report.atr_level === "Immature Account") { %>
+        <div class="result">
+            <h4 style="font-size: 24px;">${name}’s financial ability to repay failed as a result of</h4>
+            <h4 id="grade" class="red">Immature Account</h4-->
+        </div>
+        <div class="illustration">
+            <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+        </div>
+        <div class="remarks">
+            <p id="immature">Bank account provided by ${borrowername}'s does not meet our criteria for activity maturity for it to be analyzed. To give us sufficient financial data to make a well-informed analysis and prevent fraud,  potential borrowers should provide a mature bank account with at least 8-months of financial activity.</p-->
+        </div>
+        <div class="btns">
+            <a href="/" id="back-home">Return Home</a>
+        </div>
+                                  
+    <% } %>
+ </section>     
+</body>
+</html>    

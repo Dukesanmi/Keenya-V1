@@ -1,0 +1,101 @@
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.result h4 {
+	text-align: center;
+	font-size: 21px;
+	padding-bottom: 9px;
+
+}
+.green {
+	color: #02F948;
+}
+.illustration {
+	display: flex;
+	justify-content: center;
+}
+.illustration img {
+	width: 31%;
+}
+.remarks {
+	width: 90%;
+	padding-bottom: 15px;
+}
+.remarks p {
+	font-size: 14px;
+	text-align: justify;
+	line-height: 25px;
+}
+.btns {
+	display: flex;
+	flex-direction: column;
+}
+.btns a {
+	width: 100%;
+	font-size: 12px;
+	text-decoration: none;
+	text-align: center;
+	padding: 15px;
+	margin: auto;
+	background-color: black;
+	color: white;
+}
+.btns #back-home {
+	background-color: transparent;
+	color: grey;
+	/*outline: 1.5px solid grey;*/
+}
+#back-home:hover {
+	text-decoration: underline;
+} 
+.amber {
+	color: #FFC100;
+}
+.red {
+	color: red;
+}
+
+
+    /*Media Queries for Tablets*/
+    @media only screen and (max-width: 1050px) {
+        body {
+            overflow-y: auto;
+        }
+        section {
+        }
+        .result {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .illustration img {
+            width: 60%;
+        }
+        .btns {
+            width: 70%;
+        }
+        .btns a {
+            padding:18px 0px;
+        }
+            
+    }
+    /*Media Queries for Mobile Phones*/
+    @media only screen and (max-width: 1050px) {
+        .result h4 {
+            width: 82%;
+            font-size: 19px;
+        }
+        #grade {
+            font-size: 18px;
+        }
+        .remarks {
+            width: 85%;
+        }
+        .remarks p {
+            font-size: 13px;
+        }
+    }

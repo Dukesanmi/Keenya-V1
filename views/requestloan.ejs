@@ -1,0 +1,27 @@
+<%- include('partials/header'); -%>
+<title>Request a Loan</title>
+<link href="./css/requestloan.css" rel="stylesheet" type="text/css">
+	<section>
+    	<h4 align="">Request a Loan</h4>
+    	<p align="">Make a request to a lender to fill in their loan terms by providing their Email address</p>
+    	<div class="form-container">
+    		<div id="form-wrapper" class="card">
+    			<form action="/requestloan" method="POST">
+    				<label for="name" class="form-items">
+    					<input type="text" name="borrowerName" id="name" class="input-field" placeholder="Enter your name" required>
+    				</label><br>
+    				<label for="email" class="form-items">
+    					<input type="email" name="lenderEmail" id="email" class="input-field" placeholder="Enter lender's contact email address" required>
+    				</label><br>
+    				<label for="amount" class="form-items">
+    					<input type="Number" name="amount" max="100000000" id="amount" class="input-field" placeholder="How much loan do you want? (₦‎)" required>
+    				</label><br>
+    				<div id="btn-wrapper" class="btn-wrapper">
+    					<button>Request Loan</button>	
+    				</div>
+    			</form>
+    		</div>
+    	</div>
+    </section>
+</body>
+</html>

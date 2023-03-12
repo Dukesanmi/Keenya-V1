@@ -1,0 +1,79 @@
+<script src="https://js.paystack.co/v1/inline.js"></script> 
+<script type="text/javascript">
+	const paymentForm = document.getElementById('paymentForm');
+    const newloanbtn = document.getElementById('newloan'); 
+	const paybtn = document.getElementById('pay-btn'); 
+	//const amount = document.getElementById("loan-amount").value;
+    const dataH = JSON.parse('<%- JSON.stringify(data) %>');
+    //log(amount);	
+    log(dataH);
+    
+    newloanbtn.style.display = "none";
+
+	function fee(amount) {
+		let fee;
+		if (amount > 30000) { fee = amount * dataH.feeX }
+		else { fee = dataH.feeOrd }	
+		return fee;
+	}
+    //const efour = fee(45000);
+    //log(efour);
+    
+	paybtn.addEventListener("click", payWithPaystack, false);
+	function payWithPaystack(e) {
+  		e.preventDefault();
+  	 	
+  	 	const efour = fee(document.getElementById("loan-amount").value);
+  	 	log(document.getElementById("loan-amount").value);
+    	log(efour); 	
+  		let handler = PaystackPop.setup({
+    		key: dataH.publicKey, // Replace with your public key var
+    		email: dataH.user.email,
+    		amount: efour * 100,
+    		ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+    	// label: "Optional string that replaces customer email"
+    		onClose: function(){
+      			alert('Window closed.');
+    		},
+    		callback: function(response){
+      			let message = 'Payment complete! Reference: ' + response.reference;
+      			alert(message);
+
+      			document.getElementById("paymentForm").id = "new-loan-form";
+      			document.getElementById("new-loan-form").action = "/new_loan";
+      			document.getElementById("new-loan-form").method = "POST";
+                paybtn.style.display = "none";
+      			newloanbtn.style.display = "block";
+      		}	
+      		//Continue with new loan
+      		/*(async () => {
+
+                try {
+                    const res = await fetch('/newloan', { 
+                        method: 'POST', 
+                        //body: JSON.stringify({ }),
+                        headers: {'Content-Type': 'application/json'}
+                    });
+
+                    const val = await res.json();
+                    console.log(`Let's see ${val}`);
+                
+                    if (val) {
+                    	log('works')
+                        //launch.style.display = 'none';
+                        //analysis.style.display = 'block'; 
+                        //location.assign('/dashboard');
+                    }
+
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            
+          	})()*/
+
+  });
+
+  handler.openIframe();
+}
+</script>

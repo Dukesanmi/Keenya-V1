@@ -1,0 +1,85 @@
+<%- include('partials/header'); -%>
+<link href="/css/analysis.css" rel="stylesheet" type="text/css">
+<title>Confirm Potential Loan</title>        
+    
+    <h4 id="err-msg">Your information provided does not match your bank information. Please link an account that belongs to you.</h4>
+    <section>
+        <h4>Loan to you</h4>
+        <p>You are being considered for a loan from: <%= data.currentloan.lender.name %></p>
+        <div class="form-container">
+            <div id="form-wrapper" class="card">
+                <form>
+                    <label class="form-items">
+                        <span class="form-title">Lender</span>
+                        <input type="text" class="input-field" name="loanerName" value="<%= data.currentloan.lender.name %>" readonly>
+                    </label><br>    
+                    <label class="form-items">
+                        <span class="form-title">Loan Amount (₦‎)</span>
+                        <input type="text" class="input-field" name="loanAmount" value="<%= data.formattedAmount %>" disabled>
+                    </label><br> 
+                    <label class="form-items">
+                        <span class="form-title">Interest On Loan (%)</span>
+                        <input type="text" class="input-field" name="loanInterest" value="<%= data.currentloan.interest_on_loan %>" disabled>
+                    </label><br>  
+                    <label class="form-items">
+                        <span class="form-title">Repayment Method</span>
+                        <input type="text" class="input-field" name="repaymentMethod" placeholder="Loan Amount" value="<%= data.currentloan.repayment_terms.repayment_type %>" disabled>
+                    </label><br>     
+                    <div id="one-off-deets">
+                        <label id="repayment-date" class="form-items">
+                            <span class="form-title">Expected Repayment Date</span>
+                            <input type="date" class="input-field" name="repaymentDate" value="<%= data.currentloan.repayment_terms.repayment_date %>" disabled>
+                        </label><br>
+                    </div>
+                    <div id="installmental-deets">
+                        <label id="repayment-duration" class="form-items">
+                            <span class="form-title">Expected Repayment Duration</span>
+                            <input type="text" id="repayment-duration-inp" class="input-field" name="repaymentDuration" value="<%= data.currentloan.repayment_terms.repayment_duration %>" disabled>
+                        </label><br>
+                        <label id="frequency" class="form-items">
+                            <span class="form-title">Expected Repayment Frequency</span>
+                            <input type="text" class="input-field" id="repayment-frequency-inp" name="repaymentFrequency" value="<%= data.currentloan.repayment_terms.repayment_frequency %>" disabled>
+                        </label><br> 
+                    </div> 
+
+                        <!--label><span></span><input type="" name=
+                        ""></label-->
+                    <span>
+                        <input type="checkbox" name="terms" required><span>If you have ascertained that the details of the loan arrangement are correct, check this box then click the "Link your financial account" button and follow the instructions.</span><a href=""></a>
+                    </span>
+                    <div class="btn-wrapper">
+                        <button id="launch-btn">Link your financial account</button>
+                        <a href="" id="analysis-btn" style="display: none;">Analyse Data</a>
+                        <!--button id="analysis-btn" type="submit" style="display: none;">Analyse data</button-->
+                    </div>
+                    <!--button type="submit">Link your Account and Proceed to Analysis</button-->    
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+    //UX rules
+    const log = console.log;
+
+    const duration = document.getElementById("repayment-duration-inp");
+    const frequency = document.getElementById("repayment-frequency-inp");
+    const oneTimeDeets = document.getElementById("one-off-deets");
+    const installmentalDeets = document.getElementById("installmental-deets");
+
+   // log(currentloan.repayment_terms.repayment_type);
+    //const analysis = document.querySelector('#analysis-btn');
+    //let analysis = document.getElementById("analysis-btn");
+    var decoded_cookie = decodeURIComponent(document.cookie);
+
+    if (duration.value.length > 3 && frequency.value.length > 3) {
+        oneTimeDeets.style.display = 'none';
+        installmentalDeets.style.display = 'block';
+    }
+    else {
+        oneTimeDeets.style.display = 'block';
+        installmentalDeets.style.display = 'none';
+    }
+
+</script>
+<%- include('partials/mono_dialog_widget'); -%>
+</body>

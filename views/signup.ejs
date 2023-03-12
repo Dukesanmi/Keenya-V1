@@ -1,0 +1,94 @@
+<%- include('partials/authheader'); -%>
+<title>Create an account with Keenya</title>
+<link href="./css/signup.css" rel="stylesheet" type="text/css">
+	<section>
+    	<div class="form-container">
+    		<div id="form-wrapper" class="card">
+    			<h4 align="center">Create a free account</h4>
+    			<form>
+    				<label for="fullname" class="form-items">
+    					<span class="form-title">Full Name</span>
+    					<input type="text" name="name" id="fullname" class="input-field" placeholder="Full Name" required>
+    				</label><br>
+    				<label for="email" class="form-items">
+    					<span class="form-title">Email Address</span>
+    					<input type="email" name="email" id="email" class="input-field" placeholder="Email Address" required>
+    				</label><br>
+    				<label for="mobile" class="form-items">
+    					<span class="form-title">Phone Number</span>
+    					<input type="tel" name="mobile" id="mobile" class="input-field" placeholder="Phone Number" required>
+    				</label><br>
+    				<label for="password" class="form-items">
+    					<span class="form-title">Password</span>
+    					<input type="password" name="password" id="password" class="input-field" placeholder="Password" required>
+    				</label><br>
+    				<!--label for="avatar" class="form-items">
+    					<span class="form-title">Upload an avatar</span>
+    					<input type="file" name="avatar" id="avatar" class="input-field" accept="image/*" required>
+    				</label><br-->
+    				<span>
+    				<input type="checkbox" name="terms" required><a href="">I have read and agree to terms and conditions</a>
+    				</span>
+    				<div class="btn-wrapper">
+    					<button type="submit">Create Account</button>
+    				</div>
+    			</form>
+    		</div>
+    	</div>
+    </section>
+</body>
+<script type="text/javascript">
+	const log = console.log;
+	const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+
+  	form.addEventListener('submit', async (e) => {
+    	e.preventDefault();
+
+    	// reset errors
+    	//emailError.textContent = '';
+    	//passwordError.textContent = '';
+
+    	// get values
+    	const name = form.name.value;
+    	const email = form.email.value;
+    	const password = form.password.value;
+    	const mobile = form.mobile.value;
+
+    	log(name);
+    	log(email);
+    	log(password);
+    	log(mobile);
+
+    	try {
+      		const res = await fetch('auth/signup', { 
+        		method: 'POST', 
+        		body: JSON.stringify({ name, email, password, mobile }),
+        		headers: {'Content-Type': 'application/json'}
+      		});
+
+      		const data = await res.json();
+      		console.log(data);
+      		//console.log(data.err);
+
+      		if (data.err) {
+        		emailError.textContent = data.err;
+      			//console.log(data.errors.email);
+        		passwordError.textContent = data.err;
+      		}
+
+			if (data.user) {
+       	 		location.assign('/signin');
+      		}
+
+    	}
+    	catch (err) {
+    		const data = await res.json();
+      		console.log(data);
+      		console.log(err);
+    	}
+
+  	});
+</script>
+</html>

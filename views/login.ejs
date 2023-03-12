@@ -1,0 +1,74 @@
+<%- include('partials/authheader'); -%>
+<title>Sign into your Keenya account</title>
+<link href="./css/signin.css" rel="stylesheet" type="text/css">
+	<section>
+    	<div class="form-container">
+    		<div id="form-wrapper" class="card">
+    			<h4 align="center">Sign into your Keenya Account</h4>
+    			<form>
+    				<label for="email" class="form-items">
+    					<span class="form-title">Email Address</span>
+    					<input type="email" name="email" id="email" class="input-field" placeholder="Email Address" required>
+    				</label><br>
+    				<label for="password" class="form-items">
+    					<span class="form-title">Password</span>
+    					<input type="password" name="password" id="password" class="input-field" placeholder="Password" required>
+    				</label><br>
+    				<div class="btn-wrapper">
+    					<button type="submit">Sign In</button>	
+    				</div>
+    			</form>
+    			<a href="/recover_password" class="alt-sign">Forgot password?</a>
+    			<a href="/signup" class="alt-sign">Create a new account</a>
+    		</div>
+    	</div>
+    </section>
+</body>
+<script type="text/javascript">
+	const log = console.log;
+	const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+
+  	form.addEventListener('submit', async (e) => {
+    	e.preventDefault();
+
+    	// reset errors
+    	//emailError.textContent = '';
+    	//passwordError.textContent = '';
+
+    	// get values
+    	const email = form.email.value;
+    	const password = form.password.value;
+    	
+    	log(email);
+    	log(password);
+
+    	try {
+      		const res = await fetch('auth/login', { 
+        		method: 'POST', 
+        		body: JSON.stringify({ email, password }),
+        		headers: {'Content-Type': 'application/json'}
+      		});
+
+      		const data = await res.json();
+      		console.log(data);
+
+      		if (data.err) {
+        		emailError.textContent = data.err;
+      			//console.log(data.errors.email);
+        		passwordError.textContent = data.err;
+      		}
+
+			if (data.user) {
+       	 		location.assign('/new_loan');
+      		}
+
+    	}
+    	catch (err) {
+      		console.log(err);
+    	}
+
+  	});
+</script>
+</html>

@@ -1,0 +1,35 @@
+<%- include('partials/header'); -%>
+<title>Share your feedback with us</title>
+<link href="./css/feedback.css" rel="stylesheet" type="text/css">
+
+	<section>
+    	<h4 align="center">Let's Have it!</h4>
+    	<p align="center">What do you think of this version of keenya?</p>
+    	<div class="form-container">
+    		<div id="form-wrapper" class="card">
+    			<form action="/feedback" method="POST">
+    				<label for="name" class="form-items">
+    					<span class="form-title">Name</span>
+    					<input type="text" name="name" id="name" class="input-field" placeholder="What's your name?" required>
+    				</label><br>
+    				<label for="email" class="form-items">
+    					<span class="form-title">Email Address</span>
+    					<input type="email" name="email" id="email" class="input-field" placeholder="Email Address" required>
+    				</label><br>
+    				<label for="mobile" class="form-items">
+    					<span class="form-title">Phone Number</span>
+    					<input type="tel" name="mobile" id="mobile" class="input-field" placeholder="Phone Number" required>
+    				</label><br>
+    				<label for="" class="form-items">
+    					<span class="form-title">Product Feedback Message</span>
+    					<textarea placeholder="What do you think we should know?" name="message" required></textarea>
+    				</label><br>
+    				<div class="btn-wrapper">
+    					<button>Submit</button>	
+    				</div>
+    			</form>
+    		</div>
+    	</div>
+    </section>
+</body>
+</html>    

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--link href="./css/authheader.css" rel="stylesheet" type="text/css">
+    <link href="./css/result.css" rel="stylesheet" type="text/css"-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+    <title>Analysis Report</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        /*background-image: url("https://res.cloudinary.com/dxjqr24gm/image/upload/v1666270007/Keenya/Analysis_page_2.png");*/
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-family: 'Inter', sans-serif;
+        height: 100vh;
+    }
+    nav {
+        display: flex;
+        /* align-content: center; */
+        justify-content: center;
+        align-items: center
+    }
+    nav ul {
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+        /*margin-left: 20px;*/
+    }
+    nav ul li {
+        margin-left: 40px;
+    }
+    nav a{
+        text-decoration: none;
+        font-family: 'Source Serif Pro', serif;   
+        font-weight: 400;
+        color: black;
+    }
+    .logo{
+        margin: auto;
+        padding: 2rem;
+    }
+    .logo img{
+        height: 65px;
+    }
+    /* .hero-image img{
+            width: 95%;
+    } */
+    .nav-items{
+        padding: 2rem;
+    }
+    .nav-items ul{
+        list-style-type: none;
+    }
+    .nav-items ul li:nth-of-type(2) {
+        padding-bottom: 7px;
+        border-bottom: 4px solid blue;
+    }
+    .nav-btns {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        left: 500px;
+    }
+    #nav-btn li a{
+        padding: 20px 30px;
+        background-color: black;
+        color: #fff;
+    }
+    /* .nav-items ul li:nth-of-type(5){
+        background-color: antiquewhite;
+        padding: 0.5rem;
+    } 
+    .nav-items ul > li:nth-of-type(2){
+        color: red;
+    } */
+    section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .result h4 {
+        text-align: center;
+        font-size: 24px;
+        padding-bottom: 9px;
+
+    }
+    #grade {
+        font-size: 21px;
+    }
+    .green {
+        color: #02F948;
+    }
+    .illustration {
+        display: flex;
+        justify-content: center;
+    }
+    .illustration img {
+        width: 31%;
+    }
+    .remarks {
+        width: 90%;
+        padding-bottom: 15px;
+    }
+    .remarks p {
+        font-size: 14px;
+        text-align: justify;
+        line-height: 25px;
+    }
+    .btns {
+        display: flex;
+        flex-direction: column;
+    }
+    .btns a {
+        width: 100%;
+        font-size: 12px;
+        text-decoration: none;
+        text-align: center;
+        padding: 15px;
+        margin: auto;
+        background-color: black;
+        color: white;
+    }
+    .btns #back-home {
+        background-color: transparent;
+        color: grey;
+        /*outline: 1.5px solid grey;*/
+    }
+    #back-home:hover {
+        text-decoration: underline;
+    } 
+    .amber {
+        color: #FFC100;
+    }
+    .red {
+        color: red;
+    }
+    /*Media Queries for Tablets*/
+    @media only screen and (max-width: 1050px) {
+        body {
+            overflow-y: auto;
+        }
+        section {
+        }
+        .result {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .illustration img {
+            width: 60%;
+        }
+        .btns {
+            width: 70%;
+        }
+        .btns a {
+            padding:18px 0px;
+        }
+            
+    }
+    /*Media Queries for Mobile Phones*/
+    @media only screen and (max-width: 1050px) {
+        .result h4 {
+            width: 82%;
+            font-size: 19px;
+        }
+        #grade {
+            font-size: 18px;
+        }
+        .remarks {
+            width: 85%;
+        }
+        .remarks p {
+            font-size: 13px;
+        }
+    }
+</style>
+<body>
+    <header>
+        <nav class="navbar">
+          <span class="navbar-toggle" id="js-navbar-toggle">
+            <i class="fas fa-bars"></i>
+          </span>
+          <a href="/" class="logo"><img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1665660039/Keenya/Group_10.png" class="logo-img"></a>
+        </nav>
+    </header>
+    <section>
+    	<% if (report.atr_level === "Very Strong") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay your loan is</h4>
+                <h4 id="grade" class="green"><%= report.atr_level %></h4>
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Toggle-bro.png" alt="v.strong">
+            </div>
+            <div class="remarks">
+                <p id="vstrong">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have confirmed based on their financial history that they have a very strong financial ability to repay this loan. So we therefore declare them financially capable of repaying this loan in and be can be extended this loan.</p>
+            </div>
+            <div class="btns">
+                <a href="">Go ahead with loan</a>
+                <a href="/" id="back-home">Return Home</a>
+            </div>
+        <% } else if (report.atr_level === "Strong") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay your loan is</h4>
+                <h4 id="grade" class="green"><%= report.atr_level %></h4>
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Toggle-bro.png" alt="v.strong">
+            </div>
+            <div class="remarks">
+                <p id="strong">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> in line with the terms you specified and we have confirmed based on <%= loan.borrower.name %>'s financial history that they have a strong financial ability to repay this loan. They can be extended this loan.</p>
+            </div>
+            <div class="btns">
+                <a href="">Go ahead with loan</a>
+                <a href="/" id="back-home">Return Home</a>
+            </div>
+        <% } else if (report.atr_level === "Fair") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay your loan is</h4>
+                <!--h4 id="grade" class="amber"><%= report.atr_level %></h4-->
+            </div>
+            <div class="illustration">
+                <!--img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628470/Keenya/Reading_list-pana.png" alt="fair"-->
+            </div>
+            <div class="remarks">
+                <p id="fair">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have determined that their ability to repay this loan is fair and recommend you be careful and go ahead and loan them these funds if they have provided you with a befitting collateral or you have other reasons to trust that this person will repay the loan.</p>
+            </div>
+            <div class="btns">
+                <a href="">Go ahead with loan</a>
+                <a href="/" id="back-home">Return Home</a>
+            </div>
+
+        <% } else if (report.atr_level === "Weak") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay your loan is</h4>
+                <h4 id="grade" class="red"><%= report.atr_level %></h4-->
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+            </div>
+            <div class="remarks">
+                <p id="weak">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have determined that their ability to repay this loan is weak. This means that they do not have the financial capacity to repay this loan. We recommend you do not extend them this loan. However if you wish to still go ahead and loan them the funds, it should be because they have provided a good-quality collateral (find out what a good-quality collateral is) or you have other reasons to trust that this person will repay the loan.</p>
+            </div>
+            <div class="btns">
+                <a href="/" id="back-home">Return Home</a>
+                <a href="">Go ahead with loan</a>
+            </div>
+        <% } else if (report.atr_level === "Very Weak") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay your loan is</h4>
+                <h4 id="grade" class="red"><%= report.atr_level %></h4-->
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+            </div>
+            <div class="remarks">
+                <p id="vweak">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have determined that their ability to repay this loan is very weak. This means that they do not have the financial capacity to repay this loan. We strongly recommend you do not extend them this loan. However if you wish to still go ahead and loan them the funds, it should be because they have provided a good-quality collateral (find out what a good-quality collateral is) or you have other reasons to trust that this person will repay the loan.</p>
+            </div>
+            <div class="btns">
+                <a href="/" id="back-home">Return Home</a>
+                <a href="">Go ahead with loan</a>
+            </div>
+                        
+        <% } else if (report.atr_level === "Immature Account") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay failed as a result of</h4>
+                <h4 id="grade" class="red"><%= report.atr_level %></h4-->
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+            </div>
+            <div class="remarks">
+                <p id="immature">Bank account provided by <%= loan.borrower.name %>'s does not meet our criteria for activity maturity for it to be analyzed. To give us sufficient financial data to make a well-informed analysis and prevent fraud,  potential borrowers should provide a mature bank account with at least 8-months of financial activity.</p-->
+            </div>
+            <div class="btns">
+                <a href="/" id="">Return Home</a>
+            </div>
+                                      
+        <% } %>
+        <br><br>
+    </section>     
+</body>
+</html>    
