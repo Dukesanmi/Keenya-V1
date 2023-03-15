@@ -59,6 +59,11 @@ form {
 	outline: none;
 	padding-left: 6px;		
 }
+.error {
+	font-size: 13px;
+	color: red;
+	padding: 5px 0px;
+}
 input[type="file"]::file-selector-button {
 	background-color: transparent;
 	color: #012546;

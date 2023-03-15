@@ -2,6 +2,7 @@ const log = console.log;
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const {	isEmail, isMobilePhone	} = require('validator');
+const { passwordRecoveryMail } = require('../services/nodemailer');
 require('../models/Loan');
 
 const UserSchema = new mongoose.Schema({
@@ -11,14 +12,14 @@ const UserSchema = new mongoose.Schema({
 	},
 	email: {
 		type: String,
-		required: [true, 'Please enter a valid email address'],
+		required: [true, 'Please enter your email address'],
 		unique: true,
 		validate: [isEmail, 'Please enter a valid email address']
 	},
 	password: {
 		type: String,
 		required: [true, 'Please enter a password'],
-		//minlength: [6, 'Minimum password length is 6 characters']
+		minlength: [6, 'Password length should be minimum of 6 characters']
 	},
 	mobile: {
 		type: String,
@@ -27,7 +28,7 @@ const UserSchema = new mongoose.Schema({
 	},
 	loans_id: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Credit Analysis'
+		ref: 'Loans'
 	}]
 })
 
@@ -42,12 +43,25 @@ UserSchema.pre('save', async function(next) {
 UserSchema.statics.login = async function(email, password) {
 	const user = await this.findOne({ email });
 	if (user) {
+		log(user.password);
+		log('From login statics');
 		log(user);
 		const auth = await bcrypt.compare(password, user.password);
 		if (auth) {
 			return user;
 		}
 		throw Error('incorrect password');
+	}
+	throw Error('incorrect email');
+}
+
+// Static method to reset password
+UserSchema.statics.recoverpassword = async function(email) {
+	const user = await this.findOne({ email });
+	if (user) {
+		log(user);
+		const mail = await passwordRecoveryMail(user);
+		return user;
 	}
 	throw Error('incorrect email');
 }

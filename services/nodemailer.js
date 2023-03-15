@@ -131,6 +131,7 @@ module.exports.productFeedback = async function(feed) {
 			user: userId,
 			pass: pass
 		},
+		debug: true,
 		logger: true
 	});
 	let name = feed.name;
@@ -145,8 +146,12 @@ module.exports.productFeedback = async function(feed) {
     }
     log(feed)
     try {
-    	transporter.sendMail(mailOptions);
-    	log('mail sent!');
+    	const transport = await transporter.sendMail(mailOptions);
+    	if (transport) {
+    		log('mail sent!');
+    	} else {
+    		log('mail not sent!');
+    	}
     }
     catch(err) {
     	log(err);

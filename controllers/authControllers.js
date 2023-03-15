@@ -3,37 +3,42 @@ const User = require('../models/User');
 //const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { createToken, decodeToken } = require('../services/jwtService');
-const { passwordRecoveryMail } = require('../services/nodemailer');
 // JWT and Cookie expiry
 const maxAge = 3*24*60*60;
 
 // handle errors
 const handleErrors = (err) => {
-	let errors = { name: '', email: '', password: '', mobile: '' };
-
+	log(err.message, err.code);
+	//let errors = { name: '', email: '', password: '', mobile: '' };
+	
+	let errors = { email: '', password: '' };
+	
 	// handle login errors
 	if (err.message === 'incorrect email') {
 		errors.email ="This email is not registered"
 	}
 
 	if (err.message === 'incorrect password') {
-		errors.password ="Wrong password"
+		errors.password ="Incorrect password"
 	}
 
-	// duplicate error code
+	// duplicate error code 
 	if (err.code === 11000) {
-		errors.email = "Email is already taken.";
+		errors.email = "Email is already taken";
 		return errors;
 	}
 
-	// validation errors
-	if (err.message.includes('user validation failed')) {
-		Object.values(err.errors).forEach(({properties}) => {
+	//Validation errors
+	if (err.message.includes('User validation failed')) {
+		Object.values(err.errors).forEach(({ properties }) => {
+			//log(properties);
 			errors[properties.path] = properties.message;
-		})
+		});
 	}
-	return errors;	
+
+	return errors;
 }
+
 
 /*const createToken = (id) =>{
 	return jwt.sign({ id, email }, process.env['TOKEN'], {
@@ -75,10 +80,10 @@ module.exports.signup = async (req, res) => {
 	}
 }
 
-module.exports.login = async (req,res) => {
+module.exports.login = async (req, res) => {
 	const { email, password } = req.body;
 
-	try{
+	try {
 		const user = await User.login(email, password);
 		const token = createToken(user._id);
 		//log(token);
@@ -93,26 +98,16 @@ module.exports.login = async (req,res) => {
 	}
 }
 
-module.exports.logout = (req, res) => {
-	res.cookie('jwt', '', { maxAge: 1 });
-	log('Logged out');
-	res.redirect('/');
-}
-
 module.exports.passwordReset = async (req, res) => {
 	const { email } = req.body;
 	
-	const user = await User.findOne({ email });
-	if (user) {
-		try {
-			await passwordRecoveryMail(user);
-			res.status(200).json({ user: user._id });	
-		}
-		catch(err) {
-			log(err);
-			const errors = handleErrors(err);
-			res.status(400).json({ errors });
-		}
+	try {
+		const reset = await User.recoverpassword(email);
+		res.status(200).json({ user: reset._id });	
+	}
+	catch (err){
+		const errors = handleErrors(err);
+		res.status(400).json({ errors });
 	} 
 }
 
@@ -126,21 +121,26 @@ module.exports.passwordUpdate = async (req, res) => {
 	const decoded = decodeToken(token);
 	log(decoded);
 	try {
-		const user = await User.findByIdAndUpdate(decoded.id, {password: password});
+		//log(`Password: ${password}`);
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(password, salt);
-		//log(hash);
-		user.password = hash;
-		user.save();
+		//log(`Hash: ${hash}`);
+		const user = await User.findByIdAndUpdate(decoded.id, {password: hash});
 		res.status(200).json({ user });
-		log("Password saved");
+		log('From passwordUpdate handler');
+		log(user);
 	}
-	
 	catch(err) {
 		log(err);
 		const errors = handleErrors(err);
 		res.status(400).json({ errors });
 	}
+}
+
+module.exports.logout = (req, res) => {
+	res.cookie('jwt', '', { maxAge: 1 });
+	log('Logged out');
+	res.redirect('/');
 }
 
 /*module.exports.passwordUpdate = async (req, res) => {

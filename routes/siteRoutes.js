@@ -17,8 +17,8 @@ router.get('/', function(req, res) {
 
 //LOAN PAGES
 //Loan form
-//router.get('/new_loan', checkUser, siteController.newLoanPage);
-router.get('/new_loan', verifyToken, checkUser, siteController.newLoanPage);
+router.get('/new_loan', checkUser, siteController.newLoanPage);
+//router.get('/new_loan', verifyToken, checkUser, siteController.newLoanPage);
 
 router.post('/new_loan', checkUser, siteController.newLoan);
 

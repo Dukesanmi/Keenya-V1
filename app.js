@@ -11,7 +11,7 @@ const { checkUser } = require('./middleware/authentication');
 //const { requireAuth, checkUser, verifyWebhook, requireMonoReauthToken } = require('./middleware/authMiddleware');
 //const controllers = require('./controllers/allControllers');
 const moment = require('moment');
-
+const date = new Date();
 const PORT = process.env.PORT || 8000
 
 require('dotenv').config();
@@ -32,6 +32,7 @@ app.locals.formatTime = function(time) {
   return moment(time).format("DD-MM-YYYY h:mm:ss");
 }
 */
+
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -63,4 +64,4 @@ app.use('/auth', require('./routes/authRoutes'));
 
 //App Listen
 //app.listen(PORT, log(`Server run on PORT ${PORT}`));
-app.listen(5000, log(`Server run on PORT ${PORT}`));
+app.listen(5000, log(`Server run on PORT ${PORT}, Date: ${date}`));

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 require('../models/User');
 require('../models/CreditAnalysis');
+const { isEmail } = require('validator');
+
 
 //Lender Schema
 const lenderSchema = new mongoose.Schema({
@@ -97,7 +99,8 @@ const borrowerSchema = new mongoose.Schema({
     },
     email: {
         type: String, 
-        required: true
+        required: [true, 'Please enter your email address'],
+        validate: [isEmail, 'Please enter a valid email address']
     },
     mobile: {
         type: String, 

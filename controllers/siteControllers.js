@@ -6,7 +6,7 @@ const Loan = require('../models/Loan');
 const Feedback = require('../models/Feedback');
 const CreditAnalysis = require('../models/CreditAnalysis');
 const { createToken, decodeToken } = require('../services/jwtService');
-const { linkToBorrower, loanRequestMail } = require('../services/nodemailer');
+const { linkToBorrower, loanRequestMail, productFeedback, analysisReport } = require('../services/nodemailer');
 const { repayment, credAnalysis } = require('../analysis/loanAnalysis');
 const { formatQuid, checkaccountowner } = require('../analysis/miscellaneous');
 const { monoauth, accountdetails, accountidentity, debithistory, credithistory, unlinkaccount } = require('../services/monoservices');
@@ -21,6 +21,7 @@ exports.newLoanPage = async(req, res, next)=> {
 			feeOrd: 300,
 			feeX: 0.01 
 		}
+		log(res.locals.user);
 		res.render('newloan');
 	} catch (err) {
 		log(err);
@@ -318,6 +319,7 @@ module.exports.requestLoan = (req, res)=> {
 
 //Receive user feedback
 module.exports.productFeedback = async(req, res)=> {
+	log('before retrieval of body');
 	try {
 		const feedback = await new Feedback({
 			name: req.body.name,
@@ -325,13 +327,15 @@ module.exports.productFeedback = async(req, res)=> {
 			mobile: req.body.mobile,
 			message: req.body.message
 		});
+	  log(`body: ${req.body.name}`);
 		const savedFeedback = await feedback.save();
-   // log(savedFeedback);
+    log(savedFeedback);
     if (savedFeedback) {
       productFeedback(savedFeedback);
       return res.status(201).redirect("/");
 		} 
 	} catch(err) {
+		log(err);
 			return err
 	}
 }
