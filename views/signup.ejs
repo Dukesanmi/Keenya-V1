@@ -61,11 +61,6 @@
     	const password = form.password.value;
     	const mobile = form.mobile.value;
 
-    	log(name);
-    	log(email);
-    	log(password);
-    	log(mobile);
-
     	try {
       		const res = await fetch('auth/signup', { 
         		method: 'POST', 
@@ -74,8 +69,6 @@
       		});
 
       		const data = await res.json();
-      		console.log(data);
-      		//console.log(data.err);
 
       		if (data.errors) {
         		emailError.textContent = data.errors.email;
@@ -91,8 +84,7 @@
     	}
     	catch (err) {
     		const data = await res.json();
-      		console.log(data);
-      		console.log(err);
+      		throw err;
     	}
 
   	});

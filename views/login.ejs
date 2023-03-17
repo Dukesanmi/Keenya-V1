@@ -46,9 +46,6 @@
     	const email = form.email.value;
     	const password = form.password.value;
     	
-    	log(email);
-    	log(password);
-
     	try {
       		const res = await fetch('auth/login', { 
         		method: 'POST', 
@@ -74,6 +71,7 @@
     	}
     	catch (err) {
       		console.log(err);
+      		throw err;
     	}
 
   	});

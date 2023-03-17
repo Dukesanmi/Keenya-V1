@@ -1,31 +1,20 @@
 <script type="application/javascript">
-   //const log = console.log; 
     const errmsg = document.getElementById('err-msg');
     const launch = document.getElementById('launch-btn');
     const analysis = document.getElementById('analysis-btn');
-    //const loan = data.currentloan;
     const dataH = JSON.parse('<%- JSON.stringify(data) %>');
-    //console.log(dataH.currentloan.loaner);
 
     errmsg.style.display = 'none';
 
     const getCookie = (key) => {
-        //log('in the func')
-        //log(document.cookie);
         return `; ${document.cookie}`.split(`; ${key}=`).pop().split(`;`).shift();
     };
-
-     // let cookie_name = getCookie("ownAccount?");
-    //log(getCookie("ownAccount?"));
-
 
     function checkCookie() {
       let cookie_name = getCookie("ownAccount?");
       log(`Cookie name: ${cookie_name}`);
       if (cookie_name === 'false') {
-        //log('it is false');
         errmsg.style.display = 'block'; 
-        //alert('The name attached to the bank account does not match yours');
       } 
       else if (cookie_name === 'true') {
         launch.style.display = 'none';
@@ -46,23 +35,6 @@
     var config = {
         key: dataH.publicKey,
         onSuccess: function (response) {
-            log(response);
-            // copyToClipboard(response.code);
-
-            // const res = await fetch('/dashboard', { 
-            //     method: 'POST', 
-            //     body: JSON.stringify({ code: response.code, id: data.user._id }),
-            //     headers: {'Content-Type': 'application/json'}
-            // })
-            // .then(res_ => res_.json())
-            // .then((res_) => {
-            //     //   const data = await res.json();
-            //     console.log(res_);
-            //     // if (data.user) {
-            //     location.assign('/dashboard');
-            //     // }
-            // });
-
             (async () => {
 
                 try {
@@ -77,12 +49,11 @@
                 
                     if (val) {
                         checkCookie();
-                        //location.assign('/dashboard');
                     }
 
                 }
                 catch (err) {
-                    // console.log(err);
+                    throw err;
                 }
             
           })();
@@ -92,19 +63,18 @@
         console.log('user closed the widget.')
         }
     };
-    //log(`Connect = ${connect}`)
+
     connect = new Connect(config);
-    log(`Connect = ${connect}`);
     connect.setup();
     launch.onclick = function (e) {
         e.preventDefault();
         connect.open();
     };
 
-    //Loan Analysis
+    // Loan Analysis
     analysis.addEventListener('click', async (e) => {
         e.preventDefault();
-        //log('hello')
+       
         try {
             const res = await fetch('/loananalysis', { 
                 method: 'POST', 
@@ -115,9 +85,6 @@
             });
 
             const data = await res.json();
-            //console.log(`Does it log here ${data}`);
-            console.log(data);
-
           
             if (data) {
                 location.assign(`/result/${data.id}`);
@@ -125,7 +92,7 @@
 
         }
         catch (err) {
-            console.log(err);
+            throw err;
         }
     });
     

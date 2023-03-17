@@ -33,26 +33,19 @@ module.exports.checkaccountowner = (account, borrower) => {
 	var correctOut = 0;
 	var match = 0;
 
-	log(borrowerSplit);
-	log(`account name is ${account}`);
-
 	for (var i = 0; i < borrowerSplit.length; i++) {
-		log(borrowerSplit[i]);
+
 		if (account.includes(borrowerSplit[i])) {
 			match = i + 1;
-			log(`matches ${match}`);
 		}
 	}
-	log(`match ${match}`);
+
 	if (match < borrowerSplit.length) {
 		ownsaccount = false;
-		log('Names does not match');
 	}
 	else {
 		ownsaccount = true
-		log('Name matches');
 	}
-	log(ownsaccount);
 
 	return ownsaccount;
 }

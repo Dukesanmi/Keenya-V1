@@ -7,7 +7,6 @@
         <div class="form-container">
             <div id="form-wrapper" class="card">
                 <form action="" method="" id="paymentForm">
-                <!--form action="/new_loan" method="POST"-->
                     <label for="name" class="form-items">
                         <span class="form-title">Borrowers Name</span>
                         <input type="text" name="borrowerName" id="name" class="input-field" placeholder="Borrower's Name" required>
@@ -75,17 +74,15 @@
     </section>
 </body>
 <script type="text/javascript">
+    
     //UX rules
     const log = console.log;
     const form = document.querySelector('form');
     const oneOff = document.getElementById('one-off').selected;
-   //const installmental = document.getElementById('installmental').selected;
     
     if (oneOff) {
         document.getElementById('installmental-deets').style.display = 'none';
     }
-    //log(repaymentType);
-    log(oneOff);
 
     function displayOneOffDiv(id, id2, elementValue) {
         if (elementValue.value === 'One time repayment') {

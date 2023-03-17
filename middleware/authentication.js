@@ -28,15 +28,12 @@ exports.checkUser = async(req, res, next)=> {
   const token = req.cookies.jwt || "";
   if (!token) {
     res.locals.user = null;
-    //return res.redirect('/signin');
     return next();
   }
   else {
     const decodedToken = decodeToken(token);
     const user = await User.findById(decodedToken.id);
     res.locals.user = user;
-    //log('E work!')
-    //log(user);
     return next();
   }
   next();

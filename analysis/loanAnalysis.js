@@ -5,82 +5,68 @@ const daysInYear = 365;
 const weeksInMonth = 4.3452381;
 const weeksInYear = 52.1428571;
 const monthsInYear = 12;
-//log(totalAmountToBeRecovered);
-
-
-/*const overPay = repaymentAmountPerPer
-iod * numberOfPaymentPeriods;
-
-if (overPay > totalAmountToBeRecovered) {
-	let excess = overPay - totalAmountToBeRecovered;
-	log('over by');
-	log(excess);
-}
-*/
 
 module.exports.repayment = (total, freq, duration) => {
 	var repaymentAmount;
 	var durationSplit = duration.split(' ');
 	let durationNum = Number(durationSplit[0]);
-	//log(durationNum);
-	//log(durationSplit[1]);
-
+	
 	if (duration === '1 Day(s)') {
 		repaymentAmount = total;
 	} 
-	//DAILY REPAYMENT
-	//Loan to be fully repaid in days
+	// DAILY REPAYMENT
+	// Loan to be fully repaid in days
 	if (freq === 'Daily' && durationNum > 1 && durationSplit[1] === 'Day(s)') {
-		//remove the > 1 in prod
+		// remove the > 1 in prod
 		repaymentAmount = total / durationNum;
 	}
-	//Loan to be fully repaid in weeks
+	// Loan to be fully repaid in weeks
 	if (freq === 'Daily' && durationSplit[1] === 'Week(s)') {
 		repaymentAmount = total / (durationNum * daysInWeek);
 	}
-	//Loan to be fully repaid in months
+	// Loan to be fully repaid in months
 	if (freq === 'Daily' && durationSplit[1] === 'Month(s)') {
 		repaymentAmount = total / (durationNum * daysInMonth);
 	}
-	//Loan to be fully repaid in years
+	// Loan to be fully repaid in years
 	if (freq === 'Daily' && durationSplit[1] === 'Year(s)') {
 		repaymentAmount = total / (durationNum * daysInYear);
 	}
 
-	//WEEKLY PAYMENT
-	//Loan to be fully repaid in weeks
+	// WEEKLY PAYMENT
+	// Loan to be fully repaid in weeks
 	if (freq === 'Weekly' && durationSplit[1] === 'Week(s)') {
-		//remove the > 1 in prod
+		// remove the > 1 in prod
 		repaymentAmount = total / durationNum;
 	}
-	//Loan to be fully repaid in months
+	// Loan to be fully repaid in months
 	if (freq === 'Weekly' && durationSplit[1] === 'Month(s)') {
 		repaymentAmount = total / (durationNum * weeksInMonth);
 	}
-	//Loan to be fully repaid in years
+	// Loan to be fully repaid in years
 	if (freq === 'Weekly' && durationSplit[1] === 'Year(s)') {
 		repaymentAmount = total / (durationNum * weeksInYear);
 	}
 
-	//MONTHLY PAYMENT
-	//Loan to be fully repaid in months
+	// MONTHLY PAYMENT
+	// Loan to be fully repaid in months
 	if (freq === 'Monthly' && durationSplit[1] === 'Month(s)') {
-		//remove the > 1 in prod
+		// remove the > 1 in prod
 		repaymentAmount = total / durationNum;
 	}
-	//Loan to be fully repaid in months
+	// Loan to be fully repaid in months
 	if (freq === 'Monthly' && durationSplit[1] === 'Year(s)') {
 		repaymentAmount = total / (durationNum * weeksInMonth);
 	}
 
-	//ANNUAL PAYMENT
-	//Loan to be fully repaid in years
+	// ANNUAL PAYMENT
+	// Loan to be fully repaid in years
 	if (freq === 'Yearly' && durationSplit[1] === 'Year(s)') {
-		//remove the > 1 in prod
+		// remove the > 1 in prod
 		repaymentAmount = total / durationNum;
 	}
+
 	let roundedRepaymentAmount = Math.round(repaymentAmount);
-	log(roundedRepaymentAmount);
 
 	return roundedRepaymentAmount
 }
@@ -93,18 +79,16 @@ module.exports.credAnalysis = (total, inflow) => {
 		eligible: true,
 		note: ''
 	};
-	//log(inflow.length);
+	
 	if (inflow.length < 8) {
 		eligibility.analyse = false
 		eligibility.eligible = false
 		eligibility.note = 'Immature Account'
 	}
 	else {
-		//eligibility.analyse = true //during clean up
 		for (var i = 0; i < inflow.length; i++) {
-			//log(income[i].amount);
 
-			//Point scoring
+			// Point scoring
 			if (total < (0.1 * (inflow[i].amount/100))) { points = points + 6 }
 			else if (total < (0.3 * (inflow[i].amount/100))) { points = points + 5 }
 			else if (total < (0.5 * (inflow[i].amount/100))) { points = points + 4 }
@@ -113,9 +97,8 @@ module.exports.credAnalysis = (total, inflow) => {
 			else if (total > (0.9 * (inflow[i].amount/100))) { points = points + 1 }
 			else { points = points + 0 }
 		}
-		//log(points);
 		
-		//Inference
+		// Inference
 		switch (Math.round((points - 2)/8)) {
 	 		case 5:
 				eligibility.analyse = true

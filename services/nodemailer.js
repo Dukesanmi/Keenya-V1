@@ -6,10 +6,8 @@ const userId = process.env.NODEMAILER_USER;
 const pass = process.env.NODEMAILER_PASS;
 
 
-//Loanee Account linking
+// Loanee Account linking
 module.exports.linkToBorrower = function(loan) {
-	log(loan);
-	//log(loan.loanee);
 	let transporter = nodemailer.createTransport({
 		service: 'zoho',
 		host: 'smtp.zoho.com',
@@ -18,8 +16,6 @@ module.exports.linkToBorrower = function(loan) {
 		auth: {
 			user: userId,
 			pass: pass
-			//user: 'app.keenya@zohomail.com',
-			//pass: 'nocturnal93'
 		}
 	});
 	let borrowerFirstName = loan.borrower.name.split(' ')[0];
@@ -36,53 +32,16 @@ module.exports.linkToBorrower = function(loan) {
     }
     try {
     	transporter.sendMail(mailOptions);
-    	log('mail sent!');
     }
     catch(err) {
-    	log(err);
     	throw err;
     }
 }
 
-/*module.exports.linkToBorrower = function(loan) {
-	log(loan);
-	//log(loan.loanee);
-	let transporter = nodemailer.createTransport({
-		service: 'zoho',
-		auth: {
-			//user: user,
-			//pass: pass
-			user: 'app.keenya@zohomail.com',
-			pass: 'nocturnal93'
-		}
-	});
-	let borrowerFirstName = loan.borrower.name.split(' ')[0];
-	let lenderFirstName = loan.lender.name.split(' ')[0];
-	let lendername = loan.lender.name;
-	let loanAmount = formatQuid(loan.loan_amount);
-	let loanAmountWords = convertToWords.toWords(loan.loan_amount).toUpperCase();
-	let accountLinkPage = `http://localhost:5000/credit_analysis/${loan.loan_code}`
-	let mailOptions = {
-        from: 'sanmiapptest@zohomail.com',
-        to: loan.lender.email,
-        subject: `Potential Loan from ${lenderFirstName}`,
-        html: `<p>Dear ${borrowerFirstName},</p><p>You are being considered for a loan of <b>₦‎${loanAmount} (${loanAmountWords} NAIRA)</b> by ${lendername} and we are tasked to assess your ability to repay this loan extended to you.</p><p>Click on the link below to view the details of the loan and authenticate your account so analysis can be carried out.</p><p style="font-weight: 600;">Loan link: <a href="${accountLinkPage}" target="_blank">View the loan details and link Your account</a></p><br><p>Note: Sensitive information concerning your bank account will be kept confidential and will not be exposed to your credit provider or any other parties.</p>`
-    }
-    try {
-    	transporter.sendMail(mailOptions);
-    	log('mail sent!');
-    }
-    catch(err) {
-    	log(err);
-    	throw err;
-    }
-}*/
 
-
-//Request a Loan
+// Request a Loan
 module.exports.loanRequestMail = async function(loanRequest) {
-	log('started');
-	log(loanRequest);
+
 	let transporter = await nodemailer.createTransport({
 		service: 'zoho',
 		host: 'smtp.zoho.com',
@@ -105,23 +64,18 @@ module.exports.loanRequestMail = async function(loanRequest) {
         subject: `Loan Request from ${borrowerFirstName}`,
         html: `<p>Hello there,</p><br><p>${borrowerFirstName} has requested you extended them a loan of ${loanAmount}.</p><br><p>If you are considering giving out this loan to ${borrowerFirstName} and you want to confirm their ability to repay you, click on <a href="${newLoanPage}" target="_blank">Create new Loan</a></p><br>`
     }
-    log(loanAmount);
+
     try {
-    	log('bout to takeoff');
     	transporter.sendMail(mailOptions);
-    	log('mail sent!');
     }
     catch(err) {
-    	log(err);
     	throw err;
     }
 }
 
 
-//Send Feedback
+// Send Feedback
 module.exports.productFeedback = async function(feed) {
-	//log(loan);
-	//log(loan.loanee);
 	let transporter = await nodemailer.createTransport({
 		service: 'zoho',
 		host: 'smtp.zoho.com',
@@ -144,26 +98,17 @@ module.exports.productFeedback = async function(feed) {
         subject: `Feedback Message from ${name}`,
         html: `<p>Name: ${name}</p><br><p>Email: ${email}</p><br><p>Mobile Number: ${mobile}</p><br><p>Message: ${message}</p><br>`
     }
-    log(feed)
     try {
     	const transport = await transporter.sendMail(mailOptions);
-    	if (transport) {
-    		log('mail sent!');
-    	} else {
-    		log('mail not sent!');
-    	}
     }
     catch(err) {
-    	log(err);
     	throw err;
     }
 }
 
 
-//Credit Analysis Report
+// Credit Analysis Report
 module.exports.analysisReport = function(loan, borrower) {
-	log(loan);
-	log(borrower);
 	let transporter = nodemailer.createTransport({
 		service: 'zoho',
 		host: 'smtp.zoho.com',
@@ -185,17 +130,14 @@ module.exports.analysisReport = function(loan, borrower) {
     }
     try {
     	transporter.sendMail(mailOptions);
-    	log('mail sent!');
     }
     catch(err) {
-    	log(err);
     	throw err;
     }
 }
 
-//Password Recovery
+// Password Recovery
 module.exports.passwordRecoveryMail = async function(user) {
-	log(user);
 	let transporter = nodemailer.createTransport({
 		service: 'zoho',
 		host: 'smtp.zoho.com',
@@ -215,45 +157,9 @@ module.exports.passwordRecoveryMail = async function(user) {
         html: `<p>Dear ${firstname},</p><p>You requested a password reset.</p><p>Click on the link below to create your new password.</p><p sty1le="font-weight: 600;">Password reset link: <a href="${resetLink}" target="_blank">Reset Link</a></p><p>You can now reset and create your new password.</p>`
     }
     try {
-
     	const transport = await transporter.sendMail(mailOptions);
-    	if (transport) {
-    		log('mail sent!');
-    	} else {
-    		log('mail not sent!');
-    	}
     }
     catch(err) {
-    	log(err);
     	throw err;
     }
 }
-
-
-/*module.exports.passwordRecoveryMail = function(user) {
-	log(user);
-	let transporter = nodemailer.createTransport({
-		service: 'zoho',
-		auth: {
-			user: 'sanmiapptest@zohomail.com',
-			pass: 'weAreOasis88@'
-		}
-	});
-	let firstname = user.name.split(' ')[0];
-	let resetLink = `http://localhost:5000/new_password/${user._id}`
-	let mailOptions = {
-        from: 'sanmiapptest@zohomail.com',
-        to: user.email,
-        subject: 'Password Recovery',
-        html: `<p>Dear ${firstname},</p><p>You requested a password reset.</p><p>Click on the link below to create your new password.</p><p sty1le="font-weight: 600;">Password reset link: <a href="${resetLink}" target="_blank">Reset Link</a></p><p>You can now reset and create your new password.</p>`
-    }
-    try {
-    	transporter.sendMail(mailOptions);
-    	log('mail sent!');
-    }
-    catch(err) {
-    	log(err);
-    	throw err;
-    }
-}
-*/

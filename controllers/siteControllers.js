@@ -21,32 +21,24 @@ exports.newLoanPage = async(req, res, next)=> {
 			feeOrd: 300,
 			feeX: 0.01 
 		}
-		log(res.locals.user);
 		res.render('newloan');
 	} catch (err) {
-		log(err);
 		next(err);
 	}
 }
 
 
 exports.newLoan = async (req, res, next) => {
-	//Get loaner's data
+	// Get loaner's data
 	let lenderData = res.locals.user;
-	log('Lender Data');
-	log(lenderData);
-	log(req.body.borrowerName);
-	//log(req.body.loanAmount);
 
 	// Create Loan code
   const loan_token = createToken(lenderData._id);
   const loan_token_slice = loan_token.slice(160); 
-  //log(loan_token_slice.length);
-  //log(loanerData._id);	
 
   var userLoans = lenderData.loans_id;
 
-  //Create new loan
+  // Create new loan
   try {
     const listing = await new Loan({
     	lender: {
@@ -71,29 +63,23 @@ exports.newLoan = async (req, res, next) => {
     	lender_id: lenderData._id
     });
 
-    //log(listing);
     const savedListing = await listing.save();
-    log(savedListing);
+    
     // Notify Borrower of loan arrangement
     if (savedListing) {
     	userLoans.push(savedListing._id);
-      log(savedListing.lender_id);
-      log(userLoans);
       const pop = await User.findByIdAndUpdate(savedListing.lender_id, {loans_id: userLoans});
-      log(`POP: ${pop}`);
       linkToBorrower(savedListing);
-      //const pop = User.findByIdAndUpdate(loanerData._id, {})
       return res.status(201).redirect("/");
     }
   } catch (err) {
-    log(err);
+    return err;
     //next(err);
   }
 
 };
 
 
-//Loan Analysis
 module.exports.loanDetailsPage = async(req, res, next)=> {
 	try {
 		const currentloan = await Loan.findOne({ loan_code: req.params.loan_code });
@@ -105,36 +91,22 @@ module.exports.loanDetailsPage = async(req, res, next)=> {
 		}
 		const currentDate = new Date();
 		const time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-		//log(res.locals.monoId);
-		//log(`As at ${time} curent loan data ${res.locals.data.currentloan}`);
 		res.render('analysis');
 	} catch (err) {
-		log(err);
 		next(err);
 	}
 }
 
+
 module.exports.financialData = async(req, res)=> {
 	const { code, borrower, loanId } = req.body;
-	//log(code);
-	log(`loan id ${loanId}`);
-	//log(borrower);
 
 	if (code) {
 
 		try {
 			const monoId = await monoauth(code);
-			//log(monoId);
 			const accountInfo = await accountdetails(monoId);
-			//log(`accountInfo: ${accountInfo}`);
 			const identity = await accountidentity(monoId);
-			//log(`accountInfo: ${identity}`);
-
-			//log(`account name from controller: ${accountInfo.account.name}`);
-			//log(accountInfo.meta.auth_method);
-
-			//const finbd = await Loan.findById(loanId);
-			//log(finbd);
 
 			const dispatch = {
 				$set: {
@@ -152,32 +124,20 @@ module.exports.financialData = async(req, res)=> {
 				}
 			}
 
-			//Check if borrower owns linked account
+			// Check if borrower owns linked account
 			const checkAccount = checkaccountowner(accountInfo.account.name, borrower);
-			log(`dispatch: ${dispatch}`);
-			log(`passed checkAccount`);
-			log(checkAccount);
 			res.locals.monoId = monoId;
 			//res.locals.ownsaccount = checkAccount;
 			
-			log(`before dispatch`);
-			//update loan schema
-
-			log(dispatch);
-			log(Loan);
+			// Update loan schema
 			const updateloan = await Loan.findByIdAndUpdate(loanId, dispatch);
-
 			const updatesave = await updateloan.save();
-			//log(updatesave);
 			
 			if (updatesave) {
-				log('model updated!');
 				res.cookie('monoId', monoId, { httpOnly: true, maxAge: maxAge * 1000 });
 				res.cookie('ownAccount?', checkAccount, { httpOnly: false, maxAge: maxAge * 1000 });
 				res.status(200).json('ID retrieved');
-			}
-							
-			  log(`he done pass the set`);
+			}		
 		} 
 		catch(err) {
 			return err;
@@ -186,15 +146,13 @@ module.exports.financialData = async(req, res)=> {
 	} else {
 		res.status(500).json({ error: "Error somewhere" })
 	}
-	//log(monoId.id);
 
 }
+
 
 module.exports.loanAnalysis = async(req, res)=> {
 	const { loan } = req.body; 
 	const monoId = req.cookies.monoId;
-	//log(`Mono ID: ${monoId}`); 
-	//log(loan); 
 	const totalLoan = loan.loan_amount + ((loan.interest_on_loan/100) * loan.loan_amount);
 	const repaymentType = loan.repayment_terms.repayment_type;
 	const repaymentDuration = loan.repayment_terms.repayment_duration;
@@ -203,32 +161,17 @@ module.exports.loanAnalysis = async(req, res)=> {
 	// Repayment Amount
 	const repaymentAmount = repayment(totalLoan, repaymentFreq, repaymentDuration);
 
-	log(`Total Loan: ${totalLoan}`);
-	log(`Repayment Type: ${repaymentType}`);
-	log(`Repayment Duration: ${repaymentDuration}`);
-	log(`Repayment Frequency: ${repaymentFreq}`);
-	log(`Repayment Amount Per period: ${repaymentAmount}`);
-
-	//log(log);
-	//log(res.locals.monoId);
-	log(`The monoID is ${monoId}`);
-	
 	// Get borrower's financial data from mono
 	const creditHistory = await credithistory(monoId);
 	//const debitHistory = await debithistory(monoId);
-	
-	log(creditHistory);
-	//log(debitHistory);
 
 	// Analyse financial data 
 	let analysis;
 	analysis = credAnalysis(totalLoan, creditHistory.history);	
-	log(analysis);
 
-	//create credit analysis 
-
+	// Create instance of credit analysis 
 	var credWorthy = false;
-	
+
 	// Post credit analysis data to db
   try {
     const credAnal = await new CreditAnalysis({
@@ -239,32 +182,18 @@ module.exports.loanAnalysis = async(req, res)=> {
     });
 
     const savedCreditAnalysis = await credAnal.save();
-    log('CreditAnalysis saved');
-    log(savedCreditAnalysis);
 
-		//update loan schema with credit analysis
+		// Update loan schema with credit analysis
 		const loanupdate = await Loan.findByIdAndUpdate(loan._id, {credit_analysis: savedCreditAnalysis._id});
 		const loansave = await loanupdate.save();
-  	log('loansave before if statement');
 
 		if (loansave) {
-			log('loansave if is true');
-			log(loansave);
-
 			// Unlink user account	
 			//await unlinkaccount(monoId);
 			const unlink = await unlinkaccount(monoId);
-			log(unlink);
-
-			//res.status(200).redirect(`result/${savedCreditAnalysis._id}`);
-
 
 			if (unlink === "OK") {
-				log('should redirect now');
-				//return res.status(200).redirect(`/result/${savedCreditAnalysis._id}`);
 				return res.status(200).json({status: "OK", id: savedCreditAnalysis._id});
-				//return res.status(200).redirect(`/result/${savedCreditAnalysis._id}`);
-
 			}
 		}
 
@@ -274,32 +203,28 @@ module.exports.loanAnalysis = async(req, res)=> {
 
 }
 
-//Analysis Report
+// Analysis Report
 module.exports.analysisResult = async (req, res, next)=> {
-	log('Entered report page controlla');
 	const reportId = req.params.analysis_code;
 	
 	try {
-		//Get credit analysis report
-		//const report = await CreditAnalysis.findOne({ _id: req.params.analysis_code });
+		// Get credit analysis report
 		const report = await CreditAnalysis.findById(reportId);
 		const loan = await Loan.findById(report.loan);
 
 		res.locals.report = report;
 		res.locals.loan = loan;
 
-		log(res.locals.loan);
-		//log(res.locals.report);
 		//res.render('result.ejs');
 		res.render('resultcopy.ejs');
 	}
 	catch (err) {
-		log(err);
 		next(err);
 	}
 }
 
-//Request a Loan
+
+// Request a Loan
 module.exports.requestLoan = (req, res)=> {
 	const loanRequest = {
 		borrower: req.body.borrowerName,
@@ -307,19 +232,18 @@ module.exports.requestLoan = (req, res)=> {
 		amount: req.body.amount
 	}
 	try {
-		//log(loanRequest);
-		//Send mail to the lender
+		// Send mail to the lender
 		loanRequestMail(loanRequest);
     return res.status(201).redirect("/");
-	} catch(err) {
-		return err
+	} 
+	catch(err) {
+		return err;
 	}
 }
 
 
-//Receive user feedback
+// Receive user feedback
 module.exports.productFeedback = async(req, res)=> {
-	log('before retrieval of body');
 	try {
 		const feedback = await new Feedback({
 			name: req.body.name,
@@ -327,32 +251,20 @@ module.exports.productFeedback = async(req, res)=> {
 			mobile: req.body.mobile,
 			message: req.body.message
 		});
-	  log(`body: ${req.body.name}`);
+
 		const savedFeedback = await feedback.save();
-    log(savedFeedback);
+  
     if (savedFeedback) {
       productFeedback(savedFeedback);
       return res.status(201).redirect("/");
 		} 
 	} catch(err) {
-		log(err);
 			return err
 	}
 }
 
-/*const overPay = repaymentAmountPerPeriod * numberOfPaymentPeriods;
-
-if (overPay > totalAmountToBeRecovered) {
-	let excess = overPay - totalAmountToBeRecovered;
-	log('over by');
-	log(excess);
-}
-*/
-
-
-//Admin functions
+// Admin functions
 module.exports.findLoans = (req, res)=> {
-	//log(Loan);
 	Loan.find({}, (err, loan)=> {  
 		if (err) res.status(500).json({err});
 		res.status(200).json({loan});

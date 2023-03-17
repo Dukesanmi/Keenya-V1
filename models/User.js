@@ -43,9 +43,6 @@ UserSchema.pre('save', async function(next) {
 UserSchema.statics.login = async function(email, password) {
 	const user = await this.findOne({ email });
 	if (user) {
-		log(user.password);
-		log('From login statics');
-		log(user);
 		const auth = await bcrypt.compare(password, user.password);
 		if (auth) {
 			return user;
@@ -59,7 +56,6 @@ UserSchema.statics.login = async function(email, password) {
 UserSchema.statics.recoverpassword = async function(email) {
 	const user = await this.findOne({ email });
 	if (user) {
-		log(user);
 		const mail = await passwordRecoveryMail(user);
 		return user;
 	}

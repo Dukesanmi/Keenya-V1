@@ -3,10 +3,8 @@
 	const paymentForm = document.getElementById('paymentForm');
     const newloanbtn = document.getElementById('newloan'); 
 	const paybtn = document.getElementById('pay-btn'); 
-	//const amount = document.getElementById("loan-amount").value;
     const dataH = JSON.parse('<%- JSON.stringify(data) %>');
-    //log(amount);	
-    log(dataH);
+  
     
     newloanbtn.style.display = "none";
 
@@ -16,16 +14,12 @@
 		else { fee = dataH.feeOrd }	
 		return fee;
 	}
-    //const efour = fee(45000);
-    //log(efour);
     
 	paybtn.addEventListener("click", payWithPaystack, false);
 	function payWithPaystack(e) {
   		e.preventDefault();
   	 	
   	 	const efour = fee(document.getElementById("loan-amount").value);
-  	 	log(document.getElementById("loan-amount").value);
-    	log(efour); 	
   		let handler = PaystackPop.setup({
     		key: dataH.publicKey, // Replace with your public key var
     		email: dataH.user.email,
@@ -45,33 +39,6 @@
                 paybtn.style.display = "none";
       			newloanbtn.style.display = "block";
       		}	
-      		//Continue with new loan
-      		/*(async () => {
-
-                try {
-                    const res = await fetch('/newloan', { 
-                        method: 'POST', 
-                        //body: JSON.stringify({ }),
-                        headers: {'Content-Type': 'application/json'}
-                    });
-
-                    const val = await res.json();
-                    console.log(`Let's see ${val}`);
-                
-                    if (val) {
-                    	log('works')
-                        //launch.style.display = 'none';
-                        //analysis.style.display = 'block'; 
-                        //location.assign('/dashboard');
-                    }
-
-                }
-                catch (err) {
-                    console.log(err);
-                }
-            
-          	})()*/
-
   });
 
   handler.openIframe();
