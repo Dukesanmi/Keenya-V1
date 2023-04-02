@@ -1,8 +1,9 @@
 body {
 	background: rgb(255,255,255);
 	background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 35%, rgba(231,233,229,1) 100%);
+	/*font-family: 'Overpass', sans-serif;*/
 	font-family: 'Inter', sans-serif;
-/*	height: 100vh;*/
+    /*height: 100vh;*/
 	display: flex;
 	flex-direction: column;
 	/*overflow-x: hidden;
