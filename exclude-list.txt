@@ -1,7 +1,7 @@
 node_modules
 .env
 Sample pages
-backlog.xlsx
+Backlog.xlsx
 COPIES FOR KEENYA.docx
 Group 10.png
 jotter
@@ -11,5 +11,3 @@ themath.js
 notes.txt
 site layout.txt
 ~$PIES FOR KEENYA.docx
-KeenyaV1-KP.pem
-KeenyaV1-KP.ppk

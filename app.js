@@ -39,4 +39,4 @@ app.use(siteRoutes);
 app.use('/auth', require('./routes/authRoutes'));
 
 //App Listen
-app.listen(5000, log(`Server run on PORT ${PORT}, Date: ${date}`));
+app.listen(PORT, log(`Server run on PORT ${PORT}, Date: ${date}`));

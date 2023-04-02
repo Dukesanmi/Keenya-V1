@@ -80,6 +80,7 @@ section {
 @media only screen and (max-width: 1050px) {
 	body {
 		background: white;
+		overflow-y: auto;
 	}
 	section {
 		background-color: white;
@@ -139,8 +140,11 @@ section {
 
 /*Media Queries for Mobile Phones*/
 @media only screen and (max-width: 450px) {
+	section {
+		padding: 45px 0 0 0;
+	}
 	.hero-txt h1 {
-		width: 100%;
+		width: 107%;
 		font-size: 50px;
 	}
 	.hero-txt p {
