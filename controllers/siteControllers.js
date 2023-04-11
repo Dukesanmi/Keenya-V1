@@ -37,6 +37,21 @@ exports.newLoan = async (req, res, next) => {
   const loan_token_slice = loan_token.slice(160); 
 
   var userLoans = lenderData.loans_id;
+  var repayDate = '';
+  var repayDuration = '';
+  var repayFrequency = '';
+
+  // Repayment methods 
+  if (req.body.repaymentMethod === "One time repayment") {
+  	repayDate = req.body.repaymentDate;
+  	repayDuration = '';
+  	repayFrequency = '';
+  }
+  else if (req.body.repaymentMethod === "Installmental repayment") {
+  	repayDate = '';
+  	repayDuration = `${req.body.repaymentDurationNum} ${req.body.repaymentDurationAlp}`;
+  	repayFrequency = req.body.repaymentFrequency;
+  }
 
   // Create new loan
   try {
@@ -55,9 +70,9 @@ exports.newLoan = async (req, res, next) => {
     	interest_on_loan: req.body.loanInterest,
     	repayment_terms: {
     		repayment_type: req.body.repaymentMethod,
-    		repayment_date: req.body.repaymentDate,
-    		repayment_duration:`${req.body.repaymentDurationNum} ${req.body.repaymentDurationAlp}`,
-    		repayment_frequency: req.body.repaymentFrequency
+    		repayment_date: repayDate,
+    		repayment_duration: repayDuration,
+    		repayment_frequency: repayFrequency
     	},
     	loan_code: `loan_${loan_token_slice}`,
     	lender_id: lenderData._id
@@ -167,6 +182,7 @@ module.exports.loanAnalysis = async(req, res)=> {
 
 	// Analyse financial data 
 	let analysis;
+	log(creditHistory);
 	analysis = credAnalysis(totalLoan, creditHistory.history);	
 
 	// Create instance of credit analysis 
@@ -193,7 +209,9 @@ module.exports.loanAnalysis = async(req, res)=> {
 			const unlink = await unlinkaccount(monoId);
 
 			if (unlink === "OK") {
-				return res.status(200).json({status: "OK", id: savedCreditAnalysis._id});
+				analysisReport(loan, savedCreditAnalysis._id);
+				return res.status(200).json({ status: "OK" });
+				//return res.redirect('/');
 			}
 		}
 
@@ -202,6 +220,7 @@ module.exports.loanAnalysis = async(req, res)=> {
 	}
 
 }
+
 
 // Analysis Report
 module.exports.analysisResult = async (req, res, next)=> {
@@ -262,6 +281,7 @@ module.exports.productFeedback = async(req, res)=> {
 			return err
 	}
 }
+
 
 // Admin functions
 module.exports.findLoans = (req, res)=> {

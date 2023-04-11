@@ -90,7 +90,7 @@ module.exports.passwordReset = async (req, res) => {
 	catch (err){
 		const errors = handleErrors(err);
 		res.status(400).json({ errors });
-	} 
+	}
 }
 
 module.exports.passwordUpdate = async (req, res) => {	

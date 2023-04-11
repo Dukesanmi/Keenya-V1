@@ -15,6 +15,7 @@ module.exports.createToken = (id) => {
 	}	
 }
 
+
 // Decode Token
 module.exports.decodeToken = function(token) {
 	try {

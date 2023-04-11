@@ -1,0 +1,14 @@
+# /etc/systemd/system/node-api.service
+[Unit]
+Description=Keenya App v1.0
+Documentation=https://example.com
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+ExecStart=/home/ec2-user/.nvm/versions/node/v18.15.0/bin/node /home/ec2-user/code/keenya/v1-sub/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

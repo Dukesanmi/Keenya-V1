@@ -79,6 +79,7 @@ module.exports.credAnalysis = (total, inflow) => {
 		eligible: true,
 		note: ''
 	};
+	log(inflow);
 	
 	if (inflow.length < 8) {
 		eligibility.analyse = false

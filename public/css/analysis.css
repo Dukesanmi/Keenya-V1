@@ -64,7 +64,7 @@ span > span {
 	background-color: ;
 	color: grey;
 	font-size: 13px;
-	padding: 0px 0px 3px 8px;
+	padding: 0px 0px 3px 0px;
 	text-decoration: none;
 }
 .btn-wrapper {
@@ -78,6 +78,8 @@ button {
 	background-color: black;
 	color: #fff;
 	cursor: pointer;
+	outline: none;
+	border: none;
 }
 #analysis-btn {
 	font-size: 13px;
@@ -88,7 +90,6 @@ button {
 	background-color: black;
 	color: #fff;
 	cursor: pointer;
-	border-radius: 4px;
 }
 
 /*Media Queries for Tablets*/
@@ -109,6 +110,7 @@ button {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		padding: 45px 0 0 1rem;
 	}
 	section p {
 		width: 90%;

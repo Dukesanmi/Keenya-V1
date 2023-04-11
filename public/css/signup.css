@@ -82,6 +82,7 @@ button {
 	cursor: pointer;
 	border-width: 0px;
 	border-radius: 4px;
+	border: none;
 }
 
 /*Media Queries for Tablets*/

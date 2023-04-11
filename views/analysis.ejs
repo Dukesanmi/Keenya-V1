@@ -23,12 +23,12 @@
                     </label><br>  
                     <label class="form-items">
                         <span class="form-title">Repayment Method</span>
-                        <input type="text" class="input-field" name="repaymentMethod" placeholder="Loan Amount" value="<%= data.currentloan.repayment_terms.repayment_type %>" disabled>
+                        <input type="text" class="input-field" id="repayment-style" name="repaymentMethod" placeholder="Repayment Style" value="<%= data.currentloan.repayment_terms.repayment_type %>" disabled>
                     </label><br>     
                     <div id="one-off-deets">
                         <label id="repayment-date" class="form-items">
                             <span class="form-title">Expected Repayment Date</span>
-                            <input type="date" class="input-field" name="repaymentDate" value="<%= data.currentloan.repayment_terms.repayment_date %>" disabled>
+                            <input type="text" class="input-field" name="repaymentDate" value="<%= data.currentloan.repayment_terms.repayment_date %>" disabled>
                         </label><br>
                     </div>
                     <div id="installmental-deets">
@@ -44,8 +44,8 @@
 
                         <!--label><span></span><input type="" name=
                         ""></label-->
-                    <span>
-                        <input type="checkbox" name="terms" required><span>If you have ascertained that the details of the loan arrangement are correct, check this box then click the "Link your financial account" button and follow the instructions.</span><a href=""></a>
+                    <span id="checkbox-span">
+                        <span>Please check that the details of the loan arrangement are acceptable to you before clicking the "Link your financial account" button.</span><a href=""></a>
                     </span>
                     <div class="btn-wrapper">
                         <button id="launch-btn">Link your financial account</button>
@@ -62,16 +62,19 @@
     //UX rules
     const log = console.log;
 
-    const duration = document.getElementById("repayment-duration-inp");
-    const frequency = document.getElementById("repayment-frequency-inp");
+    const repaymentStyle = document.getElementById("repayment-style").value.split(' ');
+    const frequency = document.getElementById("repayment-frequency-inp").value;
     const oneTimeDeets = document.getElementById("one-off-deets");
     const installmentalDeets = document.getElementById("installmental-deets");
     var decoded_cookie = decodeURIComponent(document.cookie);
 
-    if (duration.value.length > 3 && frequency.value.length > 3) {
+    log(repaymentStyle.length);
+
+    if (repaymentStyle.length < 3) {
         oneTimeDeets.style.display = 'none';
         installmentalDeets.style.display = 'block';
     }
+    //else if (duration.length = 2) {
     else {
         oneTimeDeets.style.display = 'block';
         installmentalDeets.style.display = 'none';

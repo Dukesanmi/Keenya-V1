@@ -59,6 +59,8 @@ button {
 	background-color: black;
 	color: #fff;
 	cursor: pointer;
+	border: none;
+	outline: none;
 }
 
 /*Media Queries for Tablets*/
@@ -71,6 +73,9 @@ button {
 /*Media Queries for Mobile Phones*/
 
 @media only screen and (max-width: 450px) {
+	section {
+		padding: 45px 0 0 1rem;
+	}
 	section p {
 		width: 92.5%;
 	}

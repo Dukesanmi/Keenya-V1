@@ -96,6 +96,8 @@ button {
 	color: #fff;
 	cursor: pointer;
 	border-radius: 4px;
+	border: none;
+	outline: none;
 }
 
 /*Media Queries for Tablets*/
