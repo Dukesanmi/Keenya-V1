@@ -1,9 +1,8 @@
 const log = console.log;
 const User = require("../models/User");
 const { decodeToken } = require('../services/jwtService');
-const secret = process.env.JWT_SECRET;
-const jwt = require('jsonwebtoken');
 
+// Verify that a user is logged in
 exports.verifyToken =  async (req, res, next) => {
   const token = req.cookies.jwt || "";
   try{
@@ -24,6 +23,7 @@ exports.verifyToken =  async (req, res, next) => {
    
 };
 
+// Check and get logged in user's information
 exports.checkUser = async(req, res, next)=> {
   const token = req.cookies.jwt || "";
   if (!token) {

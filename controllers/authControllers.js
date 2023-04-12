@@ -1,6 +1,5 @@
 const log = console.log;
 const User = require('../models/User');
-//const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { createToken, decodeToken } = require('../services/jwtService');
 // JWT and Cookie expiry

@@ -81,7 +81,7 @@ module.exports.credAnalysis = (total, inflow) => {
 	};
 	log(inflow);
 	
-	if (inflow.length < 8) {
+	if (inflow.length < 7) {
 		eligibility.analyse = false
 		eligibility.eligible = false
 		eligibility.note = 'Immature Account'

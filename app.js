@@ -29,6 +29,7 @@ app.use((req, res, next)=> {
     next();
 })
 // View engine
+app.set('views', (__dirname + '/views'));
 app.set('view engine', 'ejs');
 
 // Database connection
