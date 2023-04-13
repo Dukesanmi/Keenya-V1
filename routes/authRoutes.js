@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const authController = require('../controllers/authControllers');
+const {	authenticateAdmin } = require('../middleware/authentication');
 const router = Router();
 const User = ('../models/User');
 
@@ -19,8 +20,8 @@ router.post('/password-reset', authController.passwordReset);
 router.patch('/new-password', authController.passwordUpdate);
 
 //admin user functions
-router.get('/users', authController.findUsers);
+router.get('/users', authenticateAdmin, authController.findUsers);
 
-router.delete('/users/:id', authController.deleteUser);
+router.delete('/users/:id', authenticateAdmin, authController.deleteUser);
 
 module.exports = router;

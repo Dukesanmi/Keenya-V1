@@ -2,7 +2,7 @@ const log = console.log;
 const { Router } = require('express');
 const { createToken } = require('../services/jwtService');
 const siteController = require('../controllers/siteControllers');
-const {	verifyToken, checkUser } = require('../middleware/authentication');
+const {	verifyToken, checkUser, authenticateAdmin } = require('../middleware/authentication');
 const router = Router();
 const User = ('../models/User');
 const CreditAnalysis = ('../models/CreditAnalysis');
@@ -72,8 +72,8 @@ router.get('/new_password/:id', async function(req, res) {
 
 
 // Admin functions
-router.get('/check-credit-analysis/:loan_id', siteController.checkCreditAnalysis);
-router.get('/loans', siteController.findLoans);
-router.delete('/loans/:id', siteController.deleteLoan);
+router.get('/check-credit-analysis/:loan_id', authenticateAdmin, siteController.checkCreditAnalysis);
+router.get('/loans', authenticateAdmin, siteController.findLoans);
+router.delete('/loans/:id', authenticateAdmin, siteController.deleteLoan);
 
 module.exports = router;
