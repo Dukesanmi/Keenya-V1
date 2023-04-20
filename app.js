@@ -1,5 +1,7 @@
 const log = console.log;
 const express = require('express');
+const session = require('express-session');
+const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -9,7 +11,7 @@ const siteRoutes = require('./routes/siteRoutes');
 const { checkUser } = require('./middleware/authentication');
 const moment = require('moment');
 const date = new Date();
-const PORT = process.env.PORT || 8000
+const PORT = process.env['PORT'] || 8000
 
 require('dotenv').config();
 
@@ -18,16 +20,26 @@ const app = express();
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// Middleware
+// Middlewares
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(cookieParser());
 
-// Global vars
-app.use((req, res, next)=> {
-    res.locals.monoId = "";
+// Session and flash
+app.use(session({
+    secret: process.env['MYTOKEN'],
+    cookie: {maxAge: 60000},
+    saveUninitialized: false,
+    resave: false
+}));
+
+app.use(flash());
+
+app.use(function (req, res, next) {
+    res.locals.message = req.flash('message');
     next();
 })
+
 // View engine
 app.set('views', (__dirname + '/views'));
 app.set('view engine', 'ejs');

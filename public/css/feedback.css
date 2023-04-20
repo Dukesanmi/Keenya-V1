@@ -6,6 +6,7 @@ body {
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	overflow-y: auto;
 	/*justify-content: center;
 	align-items: center;*/
 }
@@ -115,6 +116,7 @@ button {
 @media only screen and (max-width: 450px) {
 	body {
 		background-image: url("");
+		overflow-y: auto;
 	}
 	section {
 		display: flex;

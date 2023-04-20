@@ -25,6 +25,7 @@
         background-size: cover;
         font-family: 'Inter', sans-serif;
         height: 100vh;
+        overflow-y: auto;
     }
     nav {
         display: flex;
@@ -172,7 +173,10 @@
             
     }
     /*Media Queries for Mobile Phones*/
-    @media only screen and (max-width: 1050px) {
+    @media only screen and (max-width: 450px) {
+        body {
+            overflow-y: auto;
+        }
         .result h4 {
             width: 82%;
             font-size: 19px;

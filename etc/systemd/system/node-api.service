@@ -7,7 +7,9 @@ After=network.target
 [Service]
 Type=simple
 User=ec2-user
-ExecStart=/home/ec2-user/.nvm/versions/node/v18.15.0/bin/node /home/ec2-user/code/keenya/v1-sub/app.js
+EnvironmentFile=/home/ec2-user/keenya/keenya.env
+#ExecStart=/home/ec2-user/.nvm/versions/node/v18.15.0/bin/node /home/ec2-user/code/keenya/v1-sub/app.js #Install node via nvm
+ExecStart=/usr/bin/node /home/ec2-user/keenya/v1-dev/Keenya-V1/app.js #Install node directly sudo yum install node
 Restart=on-failure
 
 [Install]

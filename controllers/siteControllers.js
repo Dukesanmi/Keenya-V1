@@ -17,7 +17,7 @@ exports.newLoanPage = async(req, res, next)=> {
 	try {
 		res.locals.data = {
 			user: res.locals.user,
-			publicKey: process.env.PAYSTACK_PUBLIC_KEY_TEST,
+			publicKey: process.env['PAYSTACK_PUBLIC_KEY_TEST'],
 			feeOrd: 300,
 			feeX: 0.01 
 		}
@@ -85,11 +85,13 @@ exports.newLoan = async (req, res, next) => {
     	userLoans.push(savedListing._id);
       const pop = await User.findByIdAndUpdate(savedListing.lender_id, {loans_id: userLoans});
       linkToBorrower(savedListing);
+      req.flash("message", `Loan successfully created! ${savedListing.borrower.name} has been notified via email.`);
       return res.status(201).redirect("/");
     }
   } catch (err) {
-    return err;
-    //next(err);
+      req.flash("Error", `Error occurred`);
+    	return err;
+    	//next(err);
   }
 
 };
@@ -205,13 +207,13 @@ module.exports.loanAnalysis = async(req, res)=> {
 
 		if (loansave) {
 			// Unlink user account	
-			//await unlinkaccount(monoId);
 			const unlink = await unlinkaccount(monoId);
 
 			if (unlink === "OK") {
 				analysisReport(loan, savedCreditAnalysis._id);
-				return res.status(200).json({ status: "OK" });
-				//return res.redirect('/');
+				//return res.status(200).json({ status: "OK" });
+      	req.flash("message", `Ananlysis done! Result of your assessment will be sent to your potential lender`);
+      	return res.status(201).redirect("/");
 			}
 		}
 
@@ -253,6 +255,7 @@ module.exports.requestLoan = (req, res)=> {
 	try {
 		// Send mail to the lender
 		loanRequestMail(loanRequest);
+    req.flash("message", `Your loan request has been sent to ${loanRequest.lenderEmail}`);
     return res.status(201).redirect("/");
 	} 
 	catch(err) {
@@ -275,6 +278,7 @@ module.exports.productFeedback = async(req, res)=> {
   
     if (savedFeedback) {
       productFeedback(savedFeedback);
+      req.flash("message", `Thank you! We appreciate your feedback`);
       return res.status(201).redirect("/");
 		} 
 	} catch(err) {

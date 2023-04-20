@@ -94,16 +94,107 @@ button {
 	outline: none;
 }
 
+/* Flash Message */
+@import url(https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css);
+.flash-msg {
+	margin: 0 0 1em 0;
+}
+.alert {
+	width: 40%;
+	display: block;
+	margin: auto;
+}
+.alert .inner {
+  display: block;
+  padding: 12px;
+  margin: 0 6px;
+  border-radius: 3px;
+  border: 1px solid rgb(180,180,180);
+  background-color: rgb(212,212,212);
+}
+
+.alert .close {
+  float: right;
+  padding-top: 5px;
+  margin: 3px 12px 0px 0px;
+  cursor: pointer;
+}
+.icon-remove {
+	width: 90%;
+	font-size: 15px;
+	font-weight: 800;
+}
+.alert .inner,.alert .close {
+  color: rgb(88,88,88);
+}
+
+.alert input {
+  display: none;
+}
+
+.alert input:checked ~ * {
+  animation-name: dismiss,hide;
+  animation-duration: 300ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  animation-delay: 0s,100ms;
+}
+
+.alert.success .inner {
+  border: 1px solid rgb(214,233,198);
+  background-color: rgb(223,240,216);
+}
+
+.alert.success .inner,.alert.success .close {
+	font-size: 13px;
+  color: rgb(70,136,71);
+}
+
+@keyframes dismiss {
+  0% {
+    opacity: 1;
+  }
+  90%, 100% {
+    opacity: 0;
+    font-size: 0.1px;
+    transform: scale(0);
+  }
+}
+
+@keyframes hide {
+  100% {
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+  }
+}
+
 
 /*Media Queries for Tablets*/
 @media only screen and (max-width: 1050px) {
+	body {
+		overflow-y: auto;
+	}
 	button {
 		width: 100%;
+	}
+	.flash-msg {
+		margin-top: 0;
+	}
+	.alert {
+		width: 80%;
 	}
 }
 
 /*Media Queries for Mobile Phones*/
 @media only screen and (max-width: 450px) {
+	body {
+		overflow-y: auto;
+	}
 	section {
 		display: flex;
 		justify-content: center;
@@ -121,6 +212,12 @@ button {
 	}
 	span > a {
 		font-size: 12px;
+	}
+	.flash-msg {
+		margin-top: 0;
+	}
+	.alert {
+		width: 80%;
 	}
 
 }

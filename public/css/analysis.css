@@ -105,6 +105,9 @@ button {
 
 /*Media Queries for Mobile Phones*/
 @media only screen and (max-width: 450px) {
+	body {
+		overflow-y: auto;
+	}
 	section {
 		display: flex;
 		flex-direction: column;

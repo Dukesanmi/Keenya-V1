@@ -65,6 +65,9 @@ button {
 
 /*Media Queries for Tablets*/
 @media only screen and (max-width: 1050px) {
+	body {
+		overflow-y: auto;
+	}
 	button {
 		width: 100%;
 	}
@@ -73,6 +76,9 @@ button {
 /*Media Queries for Mobile Phones*/
 
 @media only screen and (max-width: 450px) {
+	body {
+		overflow-y: auto;
+	}
 	section {
 		padding: 45px 0 0 1rem;
 	}

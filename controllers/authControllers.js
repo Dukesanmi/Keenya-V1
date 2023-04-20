@@ -84,7 +84,9 @@ module.exports.passwordReset = async (req, res) => {
 	
 	try {
 		const reset = await User.recoverpassword(email);
-		res.status(200).json({ user: reset._id });	
+        req.flash("message", `Password reset has been sent to your email`);
+		res.status(200).json({ user: reset._id });
+		//return res.status(201).redirect('/');	
 	}
 	catch (err){
 		const errors = handleErrors(err);
@@ -101,7 +103,9 @@ module.exports.passwordUpdate = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(password, salt);
 		const user = await User.findByIdAndUpdate(decoded.id, {password: hash});
+        req.flash("message", `Password successfully updated`);
 		res.status(200).json({ user });
+		//return res.status(201).redirect('/signin');	
 	}
 	catch(err) {
 		const errors = handleErrors(err);
@@ -110,12 +114,13 @@ module.exports.passwordUpdate = async (req, res) => {
 }
 
 module.exports.logout = (req, res) => {
-	res.cookie('jwt', '', { maxAge: 1 });
-	res.redirect('/');
+	res.cookie('jwt', '', { maxAge: 1 });	
+    req.flash("message", `Logged out successfully`);
+	return res.redirect('/');
 }
 
 
-//Admin work
+// Admin functions
 module.exports.findUsers = (req, res)=> {
 	User.find({}, (err, users)=> {  
 		if (err) res.status(500).json({err}); 

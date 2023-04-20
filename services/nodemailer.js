@@ -2,9 +2,9 @@ const log = console.log;
 const nodemailer = require('nodemailer');
 const { formatQuid } = require('../analysis/miscellaneous');
 const convertToWords = require('number-to-words');
-const host = process.env.WEB_HOST;
-const userId = process.env.NODEMAILER_USER;
-const pass = process.env.NODEMAILER_PASS;
+const host = process.env['WEB_HOST'];
+const userId = process.env['NODEMAILER_USER'];
+const pass = process.env['NODEMAILER_PASS'];
 
 
 // Loanee Account linking

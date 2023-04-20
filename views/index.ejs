@@ -1,19 +1,20 @@
 <%- include('partials/header'); -%>
 <title>Keenya | Get your money</title>
 <link href="./css/landing.css" rel="stylesheet" type="text/css">
-
-    <!--div>
-		<h1 align="center">Welcome to test your app</h1>
-        <h5 align="center">Where you test critical endpoints</h5>
-        <h3>Functions you can test now</h3>
-		<ul>
-            <li><a href="auth/users" target="_blank">See Users</a></li>  
-            <li><a href="/signup">Create Account</a></li>  
-            <li><a href="/signin">Login</a></li>  
-            <li><a href="/recover_password">Recover Password</a></li>    
-            <li><a href="/new_loan">New Loan</a></li>    
-        </ul>
-	</div-->
+      <% if (message.length > 0) { %>
+        <div class="flash-msg">   
+            <div class="alert success">
+                <input type="checkbox" id="alert2"/>
+                <label class="close" title="close" for="alert2">
+                  <i class="icon-remove"></i>
+                  <!--p class="icon-remove"><b>X</b></p-->
+                </label>
+                <p class="inner" align="center">
+                    <%= message %>
+                </p>
+            </div>
+        </div>    
+        <% } %>
     <section>
         <div class="hero-container">
             <div class="hero-wrapper">
@@ -41,3 +42,6 @@
     </section>
 </body>
 </html>
+<script type="text/javascript">
+    const log = console.log;
+</script>    
