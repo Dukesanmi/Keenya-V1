@@ -3,8 +3,10 @@ const nodemailer = require('nodemailer');
 const { formatQuid } = require('../analysis/miscellaneous');
 const convertToWords = require('number-to-words');
 const host = process.env['WEB_HOST'];
-const userId = process.env['NODEMAILER_USER'];
-const pass = process.env['NODEMAILER_PASS'];
+const userIdBizOps = process.env['KEENYA_MAILER_BIZOPS'];
+const userIdContact = process.env['KEENYA_MAILER_CONTACT'];
+const userIdSupport = process.env['KEENYA_MAILER_SUPPORT'];
+const pass = process.env['KEENYA_MAILER_PASS'];
 
 
 // Loanee Account linking
@@ -15,7 +17,7 @@ module.exports.linkToBorrower = function(loan) {
 		port: '465',
 		secure: true,
 		auth: {
-			user: userId,
+			user: userIdBizOps,
 			pass: pass
 		}
 	});
@@ -26,7 +28,7 @@ module.exports.linkToBorrower = function(loan) {
 	let loanAmountWords = convertToWords.toWords(loan.loan_amount).toUpperCase();
 	let accountLinkPage = `${host}/credit_analysis/${loan.loan_code}`
 	let mailOptions = {
-        from: userId,
+        from: `Keenya ${userIdBizOps}`,
         to: loan.lender.email,
         subject: `Potential Loan from ${lenderFirstName}`,
         html: `<body style="font-family: 'Inter', sans-serif; background-color: rgba(1,74,115, 0.1); padding: 15px 0 0 0; height: auto; overflow-y: auto;">
@@ -76,7 +78,7 @@ module.exports.loanRequestMail = async function(loanRequest) {
 		port: '465',
 		secure: true,
 		auth: {
-			user: userId,
+			user: userIdBizOps,
 			pass: pass
 		},
 		debug: true,
@@ -87,7 +89,10 @@ module.exports.loanRequestMail = async function(loanRequest) {
 	let lenderEmail = loanRequest.lenderEmail;
 	let newLoanPage = `${host}/new_loan`
 	let mailOptions = {
-        from: userId,
+        from: {
+		    name: 'Keenya Requests',
+		    address: userIdBizOps
+		},
         to: loanRequest.lenderEmail,
         subject: `Loan Request from ${borrowerFirstName}`,
         html: `<body style="font-family: 'Inter', sans-serif; background-image: url('https://res.cloudinary.com/dxjqr24gm/image/upload/v1680686695/Keenya/pexels-henry-_-co-1939485.jpg'); background-repeat: no-repeat;background-size: cover; padding: 15px 0 0 0; height: auto; overflow-y: auto;">
@@ -135,7 +140,7 @@ module.exports.productFeedback = async function(feed) {
 		port: '465',
 		secure: true,
 		auth: {
-			user: userId,
+			user: userIdContact,
 			pass: pass
 		},
 		debug: true,
@@ -146,7 +151,10 @@ module.exports.productFeedback = async function(feed) {
 	let mobile = feed.mobile;
 	let message = feed.message;
 	let mailOptions = {
-        from: userId,
+        from: {
+		    name: 'Customer Feedback',
+		    address: userIdContact
+		},
         to: 'sanmiakande93@gmail.com',
         subject: `Feedback Message from ${name}`,
         html: `<body style="font-family: sans-serif;">
@@ -178,7 +186,7 @@ module.exports.analysisReport = function(loan, resultId) {
 		port: '465',
 		secure: true,
 		auth: {
-			user: userId,
+			user: userIdBizOps,
 			pass: pass
 		},
 		debug: true,
@@ -190,7 +198,10 @@ module.exports.analysisReport = function(loan, resultId) {
 	let loanAmount = formatQuid(loan.loan_amount);
 	let resultPage = `${host}/result/${resultId}`
 	let mailOptions = {
-        from: userId,
+        from: {
+		    name: 'Keenya Reports',
+		    address: userIdBizOps
+		},
         to: loan.lender.email,
         subject: `Ability to Repay Report`,
         html: `
@@ -238,14 +249,18 @@ module.exports.passwordRecoveryMail = async function(user) {
 		port: '465',
 		secure: true,
 		auth: {
-			user: userId,
+			user: userIdSupport,
 			pass: pass
 		}
 	});
 	let firstname = user.name.split(' ')[0];
 	let resetLink = `${host}/new_password/${user._id}`
 	let mailOptions = {
-        from: userId,
+        //from: `Keenya ${userIdSupport}`,
+        from: {
+		    name: 'Keenya Support',
+		    address: userIdSupport
+		},
         to: user.email,
         subject: 'Password Recovery',
         html: `<body style="font-family: 'Inter', sans-serif; background-image: url(''); background-repeat: no-repeat;background-size: cover; padding: 15px 0 0 0; height: auto; overflow-y: auto;">
