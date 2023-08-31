@@ -33,7 +33,7 @@ module.exports.linkToBorrower = function(loan) {
         subject: `Potential Loan from ${lenderFirstName}`,
         html: `<body style="font-family: 'Inter', sans-serif; background-color: rgba(1,74,115, 0.1); padding: 15px 0 0 0; height: auto; overflow-y: auto;">
 	<div class="div1" style="background-color: #ffffff; border: solid 1px #c0c0c0; border-radius: 0 20px 0 30px; width: 90%; margin: auto;">
-		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1680600887/Keenya/Group_19.png" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
+		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/f_auto,q_auto/v1/Keenya/Logos/Group_19" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
 		<table style="font-family: 'Inter', sans-serif; width: 75%; margin: auto; color: #111111; padding: 17px 0 0 0;">
 		  <tr>
 		    <td style="font-size: 13px; padding: 5px 0 8px 0;">Dear ${borrowerFirstName},</td>
@@ -97,7 +97,7 @@ module.exports.loanRequestMail = async function(loanRequest) {
         subject: `Loan Request from ${borrowerFirstName}`,
         html: `<body style="font-family: 'Inter', sans-serif; background-image: url('https://res.cloudinary.com/dxjqr24gm/image/upload/v1680686695/Keenya/pexels-henry-_-co-1939485.jpg'); background-repeat: no-repeat;background-size: cover; padding: 15px 0 0 0; height: auto; overflow-y: auto;">
 	<div class="div1" style="background-color: #ffffff; border: solid 1px #c0c0c0; border-radius: 0 20px 0 30px; width: 90%; margin: auto;">
-		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1680600887/Keenya/Group_19.png" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
+		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/f_auto,q_auto/v1/Keenya/Logos/Group_19" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
 		<table style="font-family: 'Inter', sans-serif; width: 75%; margin: auto; color: #111111; padding: 17px 0 0 0;">
 		  <tr>
 		    <td style="font-size: 13px; padding: 5px 0 8px 0;">Hello there,</td>
@@ -158,7 +158,7 @@ module.exports.productFeedback = async function(feed) {
         to: 'sanmiakande93@gmail.com',
         subject: `Feedback Message from ${name}`,
         html: `<body style="font-family: sans-serif;">
-	<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1665660039/Keenya/Group_10.png" style="width: 30%; display: block; margin: ; padding: 15px 0 14px 0;">
+	<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/f_auto,q_auto/v1/Keenya/Logos/Group_10" style="width: 30%; display: block; margin: ; padding: 15px 0 14px 0;">
 	<div style="padding: 0 0 0 5px;">
 		<p><b>Name:</b> ${name}</p>
 		<p><b>Email:</b> ${email}</p>
@@ -189,10 +189,10 @@ module.exports.analysisReport = function(loan, resultId) {
 			user: userIdBizOps,
 			pass: pass
 		},
-		debug: true,
-		logger: true
+		debug: true
+		//logger: true
 	});
-	log(loan.lender.email);
+	//log(loan.lender.email);
 	let borrowerFirstName = loan.borrower.name.split(' ')[0];
 	let lenderFirstName = loan.lender.name.split(' ')[0];
 	let loanAmount = formatQuid(loan.loan_amount);
@@ -203,11 +203,12 @@ module.exports.analysisReport = function(loan, resultId) {
 		    address: userIdBizOps
 		},
         to: loan.lender.email,
+        cc: loan.borrower.email,
         subject: `Ability to Repay Report`,
         html: `
         <body style="font-family: 'Inter', sans-serif; font-weight: 600; background-color: rgba(1,74,115, 0.1); padding: 15px 0 0 0; height: auto; overflow-y: auto;">
         	<div style="background-color: #ffffff; border: solid 1px #c0c0c0; border-radius: 2px; width: 92%; margin: auto;">
-        		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1680600887/Keenya/Group_19.png" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
+        		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/f_auto,q_auto/v1/Keenya/Logos/Group_19" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
 				<table style="font-family: 'Inter', sans-serif; width: 75%; margin: auto; color: #111111; padding: 17px 0 0 0;">
 					<tr>
 		    			<td style="font-size: 13px; padding: 5px 0 8px 0;">Dear ${lenderFirstName},</td>
@@ -233,11 +234,12 @@ module.exports.analysisReport = function(loan, resultId) {
 		</body>`
     }
     try {
-    	log('sending?')
+    	log('sending?');
     	transporter.sendMail(mailOptions);
+    	log('done');
     }
     catch(err) {
-    	throw err;
+    	return res.render('generror')
     }
 }
 
@@ -265,7 +267,7 @@ module.exports.passwordRecoveryMail = async function(user) {
         subject: 'Password Recovery',
         html: `<body style="font-family: 'Inter', sans-serif; background-image: url(''); background-repeat: no-repeat;background-size: cover; padding: 15px 0 0 0; height: auto; overflow-y: auto;">
 	<div class="div1" style="background-color: #ffffff; border: solid 1px #c0c0c0; border-radius: 2px; width: 92%; margin: auto;">
-		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1680600887/Keenya/Group_19.png" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
+		<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/f_auto,q_auto/v1/Keenya/Logos/Group_19" style="width: 22.5%; display: block; margin: auto; padding: 15px 0 14px 0;">
 		<table style="font-family: 'Inter', sans-serif; width: 75%; margin: auto; color: #111111; padding: 17px 0 0 0;">
 		  <tr>
 		    <td style="font-size: 13px; padding: 5px 0 8px 0;">Dear ${firstname},</td>

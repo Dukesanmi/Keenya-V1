@@ -39,6 +39,8 @@ router.post('/feedback', siteController.productFeedback);
 // Loan analysis
 router.get('/credit_analysis/:loan_code', siteController.loanDetailsPage);
 
+router.get('/credit_analysis_retry/:loan_code', siteController.loanDetailsPageretry);
+
 router.post('/financialdata', siteController.financialData);
 
 router.post('/loananalysis', siteController.loanAnalysis);
@@ -69,6 +71,10 @@ router.get('/new_password/:id', async function(req, res) {
 	res.render('newpassword');
 });
 
+//Error page
+router.get('/something_wrong', function(req, res) {
+	res.render('generror.ejs');
+})
 
 
 // Admin functions

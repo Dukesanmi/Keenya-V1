@@ -7,9 +7,9 @@ const Feedback = require('../models/Feedback');
 const CreditAnalysis = require('../models/CreditAnalysis');
 const { createToken, decodeToken } = require('../services/jwtService');
 const { linkToBorrower, loanRequestMail, productFeedback, analysisReport } = require('../services/nodemailer');
-const { repayment, credAnalysis } = require('../analysis/loanAnalysis');
-const { formatQuid, checkaccountowner } = require('../analysis/miscellaneous');
-const { monoauth, accountdetails, accountidentity, debithistory, credithistory, unlinkaccount } = require('../services/monoservices');
+const { monoauth, accountdetails, accountidentity } = require('../services/monoservices');
+const { credanalysis } = require('../analysis/credworthyanalysis');
+const { formatQuid, checkaccountowner, getTransactionRange } = require('../analysis/miscellaneous');
 const maxAge = 2*60*60;
 
 
@@ -18,12 +18,13 @@ exports.newLoanPage = async(req, res, next)=> {
 		res.locals.data = {
 			user: res.locals.user,
 			publicKey: process.env['PAYSTACK_PUBLIC_KEY_TEST'],
-			feeOrd: 300,
+			feeOrd: 500,
 			feeX: 0.01 
 		}
 		res.render('newloan');
 	} catch (err) {
-		next(err);
+    	res.render('generror')
+		//next(err);
 	}
 }
 
@@ -89,8 +90,10 @@ exports.newLoan = async (req, res, next) => {
       return res.status(201).redirect("/");
     }
   } catch (err) {
-      req.flash("Error", `Error occurred`);
-    	return err;
+      //req.flash("Error", `Error occurred`);
+    	log(err);
+    	res.render('generror');
+    	//return err;
     	//next(err);
   }
 
@@ -104,29 +107,76 @@ module.exports.loanDetailsPage = async(req, res, next)=> {
 		res.locals.data = {
 			formattedAmount,
 			currentloan,
-			publicKey: process.env.MONO_PUBLIC_KEY_TEST
+			paypublicKey: process.env['PAYSTACK_PUBLIC_KEY_TEST'],
+			publicKey: process.env.MONO_PUBLIC_KEY_TEST,
+			feeOrd: 500,
+			feeX: 0.01
 		}
 		const currentDate = new Date();
 		const time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-		res.render('analysis');
+		if (currentloan.analysed === true) {
+			return res.render('analysed');
+		}
+		if (currentloan.name_valid === 'no') {
+			return res.render('analysis-retry');
+		} else {
+			return res.render('analysis');
+		}
 	} catch (err) {
-		next(err);
+			//log(err);
+    	return res.render('generror');
+		//next(err);
 	}
 }
 
+module.exports.loanDetailsPageretry = async(req, res, next)=> {
+	try {
+		const currentloan = await Loan.findOne({ loan_code: req.params.loan_code });
+		const formattedAmount = formatQuid(currentloan.loan_amount);
+		res.locals.data = {
+			formattedAmount,
+			currentloan,
+			paypublicKey: process.env['PAYSTACK_PUBLIC_KEY_TEST'],
+			publicKey: process.env.MONO_PUBLIC_KEY_TEST,
+			feeOrd: 500,
+			feeX: 0.01
+		}
+		const currentDate = new Date();
+		const time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+		if (currentloan.analysed === true) {
+			return res.render('analysed');
+		} else {
+			return res.render('analysis-retry');
+		}
+	} catch (err) {
+			//log(err);
+    	return res.render('generror');
+		//next(err);
+	}
+}
 
 module.exports.financialData = async(req, res)=> {
-	const { code, borrower, loanId } = req.body;
+	const { code, currentloan } = req.body;
+		//log(data);
+		//log(currentloan);
 
 	if (code) {
+		const monoId = await monoauth(code);
+		const accountInfo = await accountdetails(monoId);
+		const identity = await accountidentity(monoId);
 
 		try {
-			const monoId = await monoauth(code);
-			const accountInfo = await accountdetails(monoId);
-			const identity = await accountidentity(monoId);
+			const namecheck = checkaccountowner(accountInfo.account.name, currentloan.borrower.name);
+			log(namecheck);
+			log('before dispatch');
+			log(monoId);
 
+
+			// Update finInfo in loan schema
 			const dispatch = {
 				$set: {
+					//'analysed': true,
+					'name_valid': namecheck,
 					'borrower.finInfo.monoId': monoId,
 					'borrower.finInfo.auth_method': accountInfo.meta.auth_method,
 					'borrower.finInfo.institution_name': accountInfo.account.institution.name,
@@ -137,90 +187,101 @@ module.exports.financialData = async(req, res)=> {
 					'borrower.finInfo.account_type': accountInfo.account.type,
 					'borrower.finInfo.currency': accountInfo.account.currency,
 					'borrower.finInfo.account_balance': accountInfo.account.balance,
-					'borrower.finInfo.bvn': identity.bvn
+					//'borrower.finInfo.bvn': identity.bvn,
+					'borrower.finInfo.bvn': 20032345659
 				}
 			}
+			log('dispatch');
 
-			// Check if borrower owns linked account
-			const checkAccount = checkaccountowner(accountInfo.account.name, borrower);
-			res.locals.monoId = monoId;
-			//res.locals.ownsaccount = checkAccount;
-			
 			// Update loan schema
-			const updateloan = await Loan.findByIdAndUpdate(loanId, dispatch);
+			const updateloan = await Loan.findByIdAndUpdate(currentloan._id, dispatch);
 			const updatesave = await updateloan.save();
-			
+			//log(updatesave);
+
+			/*const findnewloan = await Loan.findById(currentloan._id);
+			log(findnewloan);
+			//log(`updatesave ${updatesave}`);	*/
+
 			if (updatesave) {
 				res.cookie('monoId', monoId, { httpOnly: true, maxAge: maxAge * 1000 });
-				res.cookie('ownAccount?', checkAccount, { httpOnly: false, maxAge: maxAge * 1000 });
-				res.status(200).json('ID retrieved');
-			}		
-		} 
-		catch(err) {
-			return err;
+				res.cookie('loanId', currentloan._id, { httpOnly: false, maxAge: maxAge * 1000 });
+				res.cookie('ownAccount?', namecheck, { httpOnly: false, maxAge: maxAge * 1000 });
+				return res.status(200).json('ID retrieved');
+			}
+
+			//return res.status(201).json("Data retreived");
+		}
+		catch(err) {		
+			res.status(500).json({ error: "Error somewhere" });
+			//return err;
 		}
 
 	} else {
-		res.status(500).json({ error: "Error somewhere" })
+    	return res.render('generror');
+		//res.status(500).json({ error: "Error somewhere" })
+
 	}
 
 }
 
-
-module.exports.loanAnalysis = async(req, res)=> {
-	const { loan } = req.body; 
+// Loan Analysis 
+module.exports.loanAnalysis = async(req, res, next)=> {
+	//const { loanId } = req.body; 
+	const loanId = req.cookies.loanId;
 	const monoId = req.cookies.monoId;
-	const totalLoan = loan.loan_amount + ((loan.interest_on_loan/100) * loan.loan_amount);
-	const repaymentType = loan.repayment_terms.repayment_type;
-	const repaymentDuration = loan.repayment_terms.repayment_duration;
-	const repaymentFreq = loan.repayment_terms.repayment_frequency;
+	log(loanId);
+	try {
+		// Get loan object
+		const loan = await Loan.findById(loanId);
+		log(loan);
 
-	// Repayment Amount
-	const repaymentAmount = repayment(totalLoan, repaymentFreq, repaymentDuration);
+		// Analyse Data
+		var analysis = {
+			analysed: false,
+			eligible: false,
+			note: ''
+		}
+ 
+		const analyseLoan = await credanalysis(loan);
+		log(analyseLoan);
+		analysis.analyse = analyseLoan.analyse;
+		analysis.eligible = analyseLoan.eligible;
+		analysis.note = analyseLoan.note;
+		
+		// Create instance of credit analysis 
+		const credAnal = await new CreditAnalysis({
+		 	loan: loan._id,
+		 	credit_worthy: analysis.eligible,
+		 	atr_level: analysis.note,
+		 	okra_customer_id: loan.borrower.finInfo.customerId
+		});
 
-	// Get borrower's financial data from mono
-	const creditHistory = await credithistory(monoId);
-	//const debitHistory = await debithistory(monoId);
+		// Post credit analysis data to db
+		const savedCreditAnalysis = await credAnal.save();
 
-	// Analyse financial data 
-	let analysis;
-	log(creditHistory);
-	analysis = credAnalysis(totalLoan, creditHistory.history);	
-
-	// Create instance of credit analysis 
-	var credWorthy = false;
-
-	// Post credit analysis data to db
-  try {
-    const credAnal = await new CreditAnalysis({
-    	loan: loan._id,
-    	credit_worthy: analysis.eligible,
-    	atr_level: analysis.note,
-    	monoId: monoId
-    });
-
-    const savedCreditAnalysis = await credAnal.save();
-
-		// Update loan schema with credit analysis
-		const loanupdate = await Loan.findByIdAndUpdate(loan._id, {credit_analysis: savedCreditAnalysis._id});
-		const loansave = await loanupdate.save();
-
-		if (loansave) {
-			// Unlink user account	
-			const unlink = await unlinkaccount(monoId);
-
-			if (unlink === "OK") {
-				analysisReport(loan, savedCreditAnalysis._id);
-				//return res.status(200).json({ status: "OK" });
-      	req.flash("message", `Ananlysis done! Result of your assessment will be sent to your potential lender`);
-      	return res.status(201).redirect("/");
-			}
+		const dispatchAnal = {
+			$set: { 'analysed': analysis.analyse, 'credit_analysis': savedCreditAnalysis._id }
 		}
 
-	} catch(err) {
-		return err
-	}
+		// Save analysis result to db collects
+		// Update loan schema with credit analysis
+		const loanupdate = await Loan.findByIdAndUpdate(loan._id, dispatchAnal);
+		//const loanupdate = await Loan.findByIdAndUpdate(loan._id, {credit_analysis: savedCreditAnalysis._id});
+		const loansave = await loanupdate.save();
 
+	
+		// Redirect to home page
+		if (loansave) {
+			analysisReport(loan, savedCreditAnalysis._id);
+			req.flash("message", `Assessment report has been sent to your potential lender and you should also get a copy.`);
+		  return res.status(201).redirect("/");
+	  }
+
+	} catch (err) {
+		log(err);
+		return res.render('generror');
+	}
+	
 }
 
 
@@ -259,7 +320,8 @@ module.exports.requestLoan = (req, res)=> {
     return res.status(201).redirect("/");
 	} 
 	catch(err) {
-		return err;
+    res.render('generror');
+		//return err;
 	}
 }
 
@@ -282,7 +344,8 @@ module.exports.productFeedback = async(req, res)=> {
       return res.status(201).redirect("/");
 		} 
 	} catch(err) {
-			return err
+    	res.render('generror')
+			//return err
 	}
 }
 

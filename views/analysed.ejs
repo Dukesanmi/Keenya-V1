@@ -1,0 +1,110 @@
+<%- include('partials/authheader'); -%>
+<title>Already Assessed</title>
+<style type="text/css">
+	body {
+		
+		font-family: 'Inter', sans-serif;
+		overflow-y: auto;
+		color: black;
+	}
+	section {
+		padding: 15px 0 0 2.5rem;
+	}
+	.header-cntn {
+		padding-bottom: 1em;
+	}
+	.header-cntn h2 {
+		opacity: 0.8;
+		font-size: 30px;
+		text-align: center;
+	}
+	.img-cntn {
+		display: flex;
+		justify-content: center;
+	}
+	.img-cntn img {
+
+		width: 350px;
+	}
+	.body-cntn {
+		margin-top: ;
+		width: 90%;
+	}
+	.body-cntn p {
+		font-size: 15px;
+		line-height: 35px;
+	}
+	.btn-cntn {
+		display: flex;
+		justify-content: center;
+	}
+	.btn-cntn a {
+		text-decoration: none;
+		margin: auto;
+		padding: 13px 35px;
+		font-size: 13px;
+		background-color: black;
+		color: #fff;
+		cursor: pointer;
+		margin: 1em 0;
+	}
+	b {
+		color: #FF725E;
+	}
+	.email {
+		text-decoration: none;
+	}
+
+    /*Media Queries for Tablets*/
+    @media only screen and (max-width: 1050px) {
+        body {
+            overflow-y: auto;
+        }
+        section {
+        }
+        .img-cntn img {
+            width: 45%;
+        }
+        .header-cntn h2 {
+        	font-size: 130%
+        }
+        .body-cntn p {
+			font-size: 13px;
+		}    
+    }
+    /*Media Queries for Mobile Phones*/
+    @media only screen and (max-width: 450px) {
+        body {
+            overflow-y: auto;
+        }
+        .header-cntn h2 {
+        	font-size: 110%
+        }
+        .body-cntn p {
+			font-size: 12px;
+		}    
+    }
+</style>
+<section>
+	<div>
+		<div class="header-cntn">
+			<h2 style="">Assessment has been carried out!</h2>
+		</div>
+		<div class="img-cntn">
+			<img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1689844908/Keenya/Illustrations/Completed-bro_1.png">
+		</div>
+		<div class="body-cntn">
+			<p>Creditworthiness assessment for this loan arrangement has already been carried out and the report has been sent to relevant parties (the lender and borrower). If you are a relevant party in this arrangement, please check your email (inbox and spam) for the report. If you did not get the email, please contact us at <a class="email" href="mailto:support@keenya.space"><b>support@keenya.space</b></a>.</p>
+		</div>
+		<div class="btn-cntn">
+			<a href="/" id="back-btn">Back</a>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	/*const back = document.getElementById('back')
+	back.addEventListener('click', (e)=> {
+		e.preventDefault();
+		window.location.reload();
+	});*/
+</script>

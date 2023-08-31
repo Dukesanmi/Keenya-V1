@@ -71,7 +71,7 @@ module.exports.repayment = (total, freq, duration) => {
 	return roundedRepaymentAmount
 }
 
-
+// Mono credit analysis
 module.exports.credAnalysis = (total, inflow) => {
 	let points = 0;
 	let eligibility = {

@@ -1,5 +1,6 @@
 body {
 	font-family: 'Inter', sans-serif;
+	color: black;
 }
 section {
 	padding: 45px 0 0 2rem;
@@ -62,7 +63,10 @@ button {
 	border: none;
 	outline: none;
 }
-
+.footdiv-2 ul li a {
+	text-decoration: none;
+	color: black;
+}
 /*Media Queries for Tablets*/
 @media only screen and (max-width: 1050px) {
 	body {

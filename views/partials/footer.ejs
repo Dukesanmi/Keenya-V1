@@ -1,0 +1,56 @@
+<style type="text/css">
+    footer {
+        padding-top: 50px;
+    }
+    footer > div {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+    }
+    .footdiv-1 {
+        display: flex;
+        float: left;
+    }
+    .footdiv-1 p {
+        padding: 20px 0px 20px 20px;
+    }
+    .footdiv-2 {
+        float: right;
+    }
+    .footdiv-2 ul {
+        display: flex;
+        list-style: none;
+        padding-right: 20px;
+    }
+    .footdiv-2 ul li {
+        padding: 20px 0px 20px 20px;
+    }
+    /* Media Queries for Mobile Phones */
+    @media only screen and (max-width: 450px) {
+        footer {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .footdiv-1 {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .footdiv-1 p {
+            padding: 2px 0px 20px 20px;
+        }
+    }
+</style>
+<footer>
+    <div class="footdiv-1">
+        <p align="" style="padding-bottom: 10px;">All rights reserved</p>
+        <p align="">KEENTECH SOFTWARE SOLUTIONS</p>
+    </div>
+    <div class="footdiv-2">
+        <ul>
+            <li><a href="">Terms & Conditions</a></li>
+            <li><a href="">Privacy Policy</a></li>
+            <li><a href="">Cookies Policy</a></li>
+        </ul>
+    </div>
+</footer>

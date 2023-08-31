@@ -1,17 +1,19 @@
 <%- include('partials/header'); -%>
+<script src="https://cdn.okra.ng/v3/bundle.js"></script>
 <link href="/css/analysis.css" rel="stylesheet" type="text/css">
 <title>Confirm Potential Loan</title>        
     
+    <h4 id="err-msg" class="err-msg">Your information provided does not match your bank information. Please link an account that belongs to you.</h4>
     <section>
         <h4>Loan to you</h4>
         <p>You are being considered for a loan from <%= data.currentloan.lender.name %></p>
         <p class="warning">Please ensure the account you connect belongs to <b> <%= data.currentloan.borrower.name %></b>, else your assessment will not be completed and you will be required pay the assessment fee when you attempt to connect another account.</p>
         <div class="form-container">
             <div id="form-wrapper" class="card">
-                <form id="loan-details-form">
+                <form>
                     <label class="form-items">
                         <span class="form-title">Lender</span>
-                        <input type="text" class="input-field" id="lendername" name="lenderName" value="<%= data.currentloan.lender.name %>" disabled>
+                        <input type="text" class="input-field" name="loanerName" value="<%= data.currentloan.lender.name %>" readonly>
                     </label><br>    
                     <label class="form-items">
                         <span class="form-title">Loan Amount (₦‎)</span>
@@ -19,7 +21,7 @@
                     </label><br> 
                     <label class="form-items">
                         <span class="form-title">Interest On Loan (%)</span>
-                        <input type="text" class="input-field" name="loanInterest" value="<%= data.currentloan.interest_on_loan %>%" disabled>
+                        <input type="text" class="input-field" name="loanInterest" value="<%= data.currentloan.interest_on_loan %>" disabled>
                     </label><br>  
                     <label class="form-items">
                         <span class="form-title">Repayment Method</span>
@@ -48,10 +50,10 @@
                         <span>Please check that the details of the loan arrangement are acceptable to you before clicking the "Link your financial account" button.</span><a href=""></a>
                     </span>
                     <div class="btn-wrapper">
+                        <a href="" onclick="payWithPaystack()" id="pay-btn" class="analysis-btn">Link your financial account</a>
                         <button id="launch-btn">Link your financial account</button>
-                        <button type="submit" id="analysis-btn" style="display: none;">Analyse your data</button>
+                        <a href="" id="analysis-btn" style="display: none;">Analyse your data</a>
                     </div>
-                    <!--button type="submit">Link your Account and Proceed to Analysis</button-->    
                 </form>
             </div>
         </div>
@@ -62,7 +64,6 @@
     
     //UX rules
     const log = console.log;
-    //log(data.currentloan);
 
     const repaymentStyle = document.getElementById("repayment-style").value.split(' ');
     const frequency = document.getElementById("repayment-frequency-inp").value;
@@ -83,6 +84,6 @@
     }
 
 </script>
-<%- include('partials/mono_dialog_widget'); -%>
-<!--%- include('partials/okra_dialog_widget'); -%-->
+<%- include('partials/okra_dialog_widget'); -%>
+<%- include('partials/paystack_pop_up-retry'); -%>
 </body>

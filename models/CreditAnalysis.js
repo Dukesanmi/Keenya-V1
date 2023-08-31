@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-require('../models/User');
-require('../models/Loan');
+//require('../models/User');
+//require('../models/Loan');
 
 //Loan Schema
 const creditAnalysisSchema = new mongoose.Schema({
@@ -18,7 +18,7 @@ const creditAnalysisSchema = new mongoose.Schema({
     atr_level: {
         type: String
     },
-    monoId: {
+    okra_customer_id: {
         type: String
     },
     analysis_conducted_at: {

@@ -1,0 +1,43 @@
+section {
+	padding: 15px 0 0 2rem;
+}
+.header-cntn {
+}
+.header-cntn h2 {
+	font: 55px;
+	text-align: center;
+}
+.img-cntn {
+	display: flex;
+	justify-content: center;
+}
+.img-cntn img {
+	margin-top: -6em;
+	width: 50%;
+}
+.body-cntn {
+	margin-top: -5em;
+	width: 90%;
+}
+.body-cntn p {
+	font-size: 20px;
+}
+.btn-cntn {
+	display: flex;
+	justify-content: center;
+}
+.btn-cntn a {
+	text-decoration: none;
+	margin: auto;
+	padding: 15px 39px;
+	font-size: 17px;
+	background-color: black;
+	color: #fff;
+	cursor: pointer;
+}
+b {
+	color: darkgreen;
+}
+.email {
+	text-decoration: none;
+}

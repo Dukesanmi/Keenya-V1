@@ -1,0 +1,108 @@
+<script type="application/javascript">
+    const errmsg = document.getElementById('err-msg');
+    const launch = document.getElementById('launch-btn');
+    const analysis = document.getElementById('analysis-btn');
+    const dataH = JSON.parse('<%- JSON.stringify(data) %>');
+    log(dataH)
+    const loancode = dataH.currentloan.loan_code;
+    log(loancode);
+
+
+    //errmsg.style.display = 'none';
+    
+    // Check if borrower owns account linked
+    function checkaccountowner(account, borrower) {
+        const borrowerSplit = borrower.split(' ');
+        var ownsaccount = false;
+        var correctOut = 0;
+        var match = 0;
+
+        for (var i = 0; i < borrowerSplit.length; i++) {
+
+            if (account.includes(borrowerSplit[i])) {
+                match = i + 1;
+            }
+        }
+
+        if (match < borrowerSplit.length) {
+            ownsaccount = false;
+        }
+        else {
+            ownsaccount = true
+        }
+
+        return ownsaccount;
+    }
+    
+    // Get Okra Dialog Widget
+    launch.onclick = function (e) {
+        e.preventDefault();
+        Okra.buildWithShortUrl({
+            short_url: 'llLKgArrz',
+            onSuccess: 
+            function(data){
+                (async () => {
+                    try {
+                        const res = await fetch('/financialdata', { 
+                            method: 'POST', 
+                            body: JSON.stringify({ data: data, currentloan: dataH.currentloan }),
+                            headers: {'Content-Type': 'application/json'}
+                        });
+
+                        // Verify Borrower Owns Account
+                        const verifyowner = checkaccountowner(data.identity.fullname, dataH.currentloan.borrower.name);
+                        if (verifyowner === true) {
+                            log('Owns it')
+                            const val = await res.json();
+                            //console.log('val');
+                            console.log(val);
+                            launch.style.display = "none";
+                            analysis.style.display = "block";
+                        } else {
+                            location.assign(`/credit_analysis_retry/${loancode}`);
+                        }
+                    }
+                    catch (err) {
+                        throw err;
+                    }
+            
+                })();
+                console.log('success', data)
+            },
+            onError: function() {
+                console.log('error');
+            },
+            onClose: function(){
+                console.log('closed')
+            }
+        })
+    }
+
+    // Loan Analysis work on
+    analysis.addEventListener('click', async (e) => {
+        e.preventDefault();
+       log('enter analysis');
+        try {
+            const res = await fetch('/loananalysis', { 
+                method: 'POST', 
+                body: JSON.stringify({
+                    currentloanId: dataH.currentloan._id
+                }),
+                headers: {'Content-Type': 'application/json'}
+            });
+            
+            log('after analysis')
+            const data = await res.json();
+            log(data);
+          
+            if (data) {
+                location.assign(`/`);
+            }
+
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+    
+</script>

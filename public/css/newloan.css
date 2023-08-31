@@ -7,6 +7,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
+	color: black;
 }
 section {
 	padding-top: 45px;
@@ -116,8 +117,10 @@ button {
 	cursor: pointer;
 	border-radius: 4px;
 }
-
-
+.footdiv-2 ul li a {
+	text-decoration: none;
+	color: black;
+}
 /*Media Queries for Tablets*/
 @media only screen and (max-width: 1050px) {
 	body {

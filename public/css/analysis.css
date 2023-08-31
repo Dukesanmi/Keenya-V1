@@ -1,17 +1,28 @@
 body {
-	background-image: url("https://res.cloudinary.com/dxjqr24gm/image/upload/v1666270007/Keenya/Analysis_page_2.png");
+	background-image: url("https://res.cloudinary.com/dxjqr24gm/image/upload/v1666270007/Keenya/Background%20Images/Analysis_page_2.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	font-family: 'Inter', sans-serif;
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	color: black;
 }
-#err-msg {
+#err-msg, .err-msg {
 	padding: 16px 20px;
 	/*background-color: rgba(1,74,115, 0.1);*/
 	background-color: rgba(242, 10, 10, 0.1);
 	color: red;
+}
+.warning {
+	width: 80%;
+	font-size: 95%;
+	background-color: black;
+	color: #92E3A9;
+	border-radius: 3px;
+	/*background-color: rgba(	255, 255, 0, 0.3);*/
+	padding: 16px 20px;
+	/*color: #cc3300;*/
 }
 section {
 	padding: 45px 0 0 2rem;
@@ -81,17 +92,26 @@ button {
 	outline: none;
 	border: none;
 }
-#analysis-btn {
+#analysis-btn, #pay-btn {
 	font-size: 13px;
 	text-align: center;
 	text-decoration: none;
 	width: 35%;
 	padding: 15px 30px;
-	background-color: green;
+	background-color: black;
 	color: #fff;
 	cursor: pointer;
 }
-
+#analysis-btn {
+	background-color: green;
+}
+#okra-widget-container {
+	min-height: 90%;
+}
+.footdiv-2 ul li a {
+	text-decoration: none;
+	color: black;
+}
 /*Media Queries for Tablets*/
 @media only screen and (max-width: 1050px) {
 	body {

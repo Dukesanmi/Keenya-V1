@@ -172,7 +172,7 @@ nav a {
         padding: 2rem;
     }
     .logo img{
-        height: 120px;
+        height: 70px;
     }
     .nav-btns {
         flex-direction: column;
@@ -191,7 +191,7 @@ nav a {
     /* Style the hamburger menu */
     .icon {
         margin: 3em 1.5em 0 0;
-        width: 50px;
+        width: 35px;
         background-color: ;
         position: absolute;
         right: 0;
@@ -257,7 +257,7 @@ nav a {
 
 /*Media Queries for Mobile Phones*/
 
-/*Media Queries for Tablets Vertical View*/
+/*Media Queries for Mobile Vertical View*/
 @media only screen and (max-width: 450px) {
     
     nav ul li {

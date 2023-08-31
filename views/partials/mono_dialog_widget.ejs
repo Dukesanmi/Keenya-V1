@@ -1,16 +1,18 @@
 <script type="application/javascript">
     const errmsg = document.getElementById('err-msg');
+    const form = document.querySelector('form');
     const launch = document.getElementById('launch-btn');
+    const lendername = document.getElementById('lendername');
     const analysis = document.getElementById('analysis-btn');
     const dataH = JSON.parse('<%- JSON.stringify(data) %>');
 
-    errmsg.style.display = 'none';
-
+    //errmsg.style.display = 'none';
+    // Check if borrower owns account linked
     const getCookie = (key) => {
         return `; ${document.cookie}`.split(`; ${key}=`).pop().split(`;`).shift();
     };
 
-    function checkCookie() {
+    /*function checkCookie() {
       let cookie_name = getCookie("ownAccount?");
       log(`Cookie name: ${cookie_name}`);
       if (cookie_name === 'false') {
@@ -21,8 +23,9 @@
         analysis.style.display = 'block'; 
       }
 
-    }
-
+    }*/
+    
+    // Get Mono Dialog Widget
     const copyToClipboard = text => {
         const elm = document.createElement('textarea');
         elm.value = text;
@@ -40,15 +43,23 @@
                 try {
                     const res = await fetch('/financialdata', { 
                         method: 'POST', 
-                        body: JSON.stringify({ code: response.code, borrower: dataH.currentloan.borrower.name, loanId: dataH.currentloan._id }),
+                        body: JSON.stringify({ code: response.code, currentloan: dataH.currentloan }),
                         headers: {'Content-Type': 'application/json'}
                     });
 
                     const val = await res.json();
                     console.log(val);
-                
-                    if (val) {
-                        checkCookie();
+                    let cookie_name = getCookie("ownAccount?");
+                    if (cookie_name === 'no') {
+                        location.assign(`/credit_analysis_retry/${loancode}`);
+                        
+                    } else if (cookie_name === 'yes') {
+                        launch.style.display = 'none';
+                        analysis.style.display = 'block';
+                        document.getElementById("loan-details-form").action = "/loananalysis"; 
+                        document.getElementById("loan-details-form").method = "POST";
+                        lendername.value = dataH.currentloan._id;
+                        log('neccessaary changes');
                     }
 
                 }
@@ -71,29 +82,5 @@
         connect.open();
     };
 
-    // Loan Analysis
-    analysis.addEventListener('click', async (e) => {
-        e.preventDefault();
-       
-        try {
-            const res = await fetch('/loananalysis', { 
-                method: 'POST', 
-                body: JSON.stringify({
-                    loan: dataH.currentloan
-                }),
-                headers: {'Content-Type': 'application/json'}
-            });
-
-            //const data = await res.json();
-          
-            /*if (data) {
-                location.assign(`/`);
-            }*/
-
-        }
-        catch (err) {
-            throw err;
-        }
-    });
     
 </script>

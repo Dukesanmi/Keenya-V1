@@ -4,7 +4,7 @@ require('../models/CreditAnalysis');
 const { isEmail } = require('validator');
 
 
-//Lender Schema
+// Lender Schema
 const lenderSchema = new mongoose.Schema({
     name: {
         type: String, 
@@ -20,7 +20,7 @@ const lenderSchema = new mongoose.Schema({
     }
 });
 
-//Borrower's Financial Information
+// Borrower's Financial Information
 const finInfoSchema = new mongoose.Schema({
     monoId: {
         type: String,
@@ -54,10 +54,10 @@ const finInfoSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    currency: {
+    /*currency: {
         type: String,
         default: ''
-    },
+    },*/
     account_balance: {
         type: Number
     },
@@ -69,7 +69,7 @@ const finInfoSchema = new mongoose.Schema({
 });
 
 
-//Repayment Terms Schema
+// Repayment Terms Schema
 const repaymentTermsSchema = new mongoose.Schema({
     repayment_type: {
         type: String,
@@ -91,7 +91,7 @@ const repaymentTermsSchema = new mongoose.Schema({
 });
 
 
-//Borrower Schema
+// Borrower Schema
 const borrowerSchema = new mongoose.Schema({
     name: {
         type: String, 
@@ -147,6 +147,14 @@ const loanSchema = new mongoose.Schema({
     credit_analysis: {
         type: mongoose.Schema.Types.ObjectId, 
         ref :"CreditAnalysis"
+    },
+    analysed: {
+        type: Boolean,
+        default: false
+    },
+    name_valid: {
+        type: String,
+        default: ''
     },
     created_at: {
         type: Date,

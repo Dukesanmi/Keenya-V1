@@ -134,14 +134,14 @@
         background-color: black;
         color: white;
     }
-    .btns #back-home {
+    /*.btns #back-home {
         background-color: transparent;
         color: grey;
         /*outline: 1.5px solid grey;*/
-    }
+   /* }
     #back-home:hover {
         text-decoration: underline;
-    } 
+    }*/ 
     .amber {
         color: #FFC100;
     }
@@ -198,7 +198,7 @@
           <span class="navbar-toggle" id="js-navbar-toggle">
             <i class="fas fa-bars"></i>
           </span>
-          <a href="/" class="logo"><img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1665660039/Keenya/Group_10.png" class="logo-img"></a>
+          <a href="/" class="logo"><img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1665660039/Keenya/Logos/Group_10.png" class="logo-img"></a>
         </nav>
     </header>
     <section>
@@ -208,13 +208,13 @@
                 <h4 id="grade" class="green"><%= report.atr_level %></h4>
             </div>
             <div class="illustration">
-                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Toggle-bro.png" alt="v.strong">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Illustrations/Toggle-bro.png" alt="v.strong">
             </div>
             <div class="remarks">
-                <p id="vstrong">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have confirmed based on their financial history that they have a very strong financial ability to repay this loan. So we therefore declare them financially capable of repaying this loan in and be can be extended this loan.</p>
+                <p id="vstrong">Thank you for taking the time to request and review the creditworthiness report for your potential loan arrangement with <%= loan.borrower.name %>. We are pleased to inform you that <%= loan.borrower.name %> has been assessed and determined to be creditworthy. Based on our comprehensive creditworthiness evaluation, we are confident in the creditworthiness of <%= loan.borrower.name %>. They have demonstrated a strong financial track record, responsible borrowing practices and credit management, and a stable cashflow, making them a low-risk and reliable candidate for this loan or financial arrangement they are requesting.</p>
             </div>
             <div class="btns">
-                <a href="">Go ahead with loan</a>
+                <!--a href="">Go ahead with loan</a-->
                 <a href="/" id="back-home">Return Home</a>
             </div>
         <% } else if (report.atr_level === "Strong") { %>
@@ -223,28 +223,30 @@
                 <h4 id="grade" class="green"><%= report.atr_level %></h4>
             </div>
             <div class="illustration">
-                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Toggle-bro.png" alt="v.strong">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628530/Keenya/Illustrations/Toggle-bro.png" alt="v.strong">
             </div>
             <div class="remarks">
-                <p id="strong">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> in line with the terms you specified and we have confirmed based on <%= loan.borrower.name %>'s financial history that they have a strong financial ability to repay this loan. They can be extended this loan.</p>
+                <p>Dear <%= loan.lender.name.split(' ')[0] %>,</p>
+                <p id="strong">Thank you for taking the time to request and review the creditworthiness report for your potential loan arrangement with <%= loan.borrower.name %>. We are pleased to inform you that <%= loan.borrower.name %> has been assessed and determined to be creditworthy. Based on our comprehensive creditworthiness evaluation, we are confident in the creditworthiness of <%= loan.borrower.name %>. They have demonstrated a strong financial track record, responsible borrowing practices and credit management, and a stable cashflow, making them a low-risk and reliable candidate for this loan or financial arrangement they are requesting.</p>
             </div>
             <div class="btns">
-                <a href="">Go ahead with loan</a>
+                <!--a href="">Go ahead with loan</a-->
                 <a href="/" id="back-home">Return Home</a>
             </div>
         <% } else if (report.atr_level === "Fair") { %>
             <div class="result">
                 <h4 style=""><%= loan.borrower.name %>’s financial ability to repay your loan is</h4>
-                <!--h4 id="grade" class="amber"><%= report.atr_level %></h4-->
+                <h4 id="grade" class="amber"><%= report.atr_level %></h4>
             </div>
             <div class="illustration">
-                <!--img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628470/Keenya/Reading_list-pana.png" alt="fair"-->
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628470/Keenya/Illustrations/Reading_list-pana.png" alt="fair">
             </div>
             <div class="remarks">
-                <p id="fair">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have determined that their ability to repay this loan is fair and recommend you be careful and go ahead and loan them these funds if they have provided you with a befitting collateral or you have other reasons to trust that this person will repay the loan.</p>
+                <p>Dear <%= loan.lender.name.split(' ')[0] %>,</p>
+                <p id="fair">Thank you for taking the time to request and review the creditworthiness report for your potential loan arrangement with <%= loan.borrower.name %>. We would like to provide you with a report on the creditworthiness assessment of <%= loan.borrower.name %>. After our comprehensive evaluation process, we have determined that <%= loan.borrower.name %>'s creditworthiness at this time falls within the fair range. This indicates that <%= loan.borrower.name %> has exhibited some past financial challenges or inconsistencies. They may have encountered minor issues such as late payments, limited credit history, or a slightly high debt-to-income ratio. While these factors contribute to their fair credit assessment, they have also demonstrated fairly responsible credit management. Considering their fair creditworthiness, we recommend that when you are considering this loan or financial arrangement with <%= loan.borrower.name %>, you should consider using risk mitigation approaches that include, requiring additional collateral from your borrower, implementing a repayment plan that they are able to manage, setting reasonable credit limits to reduce potential risks or simply lending them an amount of money you are willing to let go of in the event that they default.</p>
             </div>
             <div class="btns">
-                <a href="">Go ahead with loan</a>
+                <!--a href="">Go ahead with loan</a-->
                 <a href="/" id="back-home">Return Home</a>
             </div>
 
@@ -254,14 +256,15 @@
                 <h4 id="grade" class="red"><%= report.atr_level %></h4-->
             </div>
             <div class="illustration">
-                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Illustrations/Do_not_enter_sign-bro.png" alt="weak"> 
             </div>
             <div class="remarks">
-                <p id="weak">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have determined that their ability to repay this loan is weak. This means that they do not have the financial capacity to repay this loan. We recommend you do not extend them this loan. However if you wish to still go ahead and loan them the funds, it should be because they have provided a good-quality collateral (find out what a good-quality collateral is) or you have other reasons to trust that this person will repay the loan.</p>
+                <p>Dear <%= loan.lender.name.split(' ')[0] %>,</p>
+                <p id="weak">Thank you for taking the time to request and review the creditworthiness report for your potential loan arrangement with <%= loan.borrower.name %>. After our thorough evaluation process, we regret to inform you that <%= loan.borrower.name %>'s capacity to repay this loan has been assessed and determined to be weak. The assessment of weak financial capacity to repay the loan indicates that the potential borrower faces substantial obstacles in meeting their financial obligations. Our analysis reveals significant factors that may have contributed to their weak capacity, such as limited income, high debt-to-income ratio, history of defaults or missed payments, or lack of assets. While the borrower may have good intentions, their current financial circumstances presents a high-risk and raise concerns about their ability to repay this loan or fulfill their end of this financial arrangement. We advise against giving out this loan or entering into this financial arrangement with <%= loan.borrower.name %>. If you are still compelled to extend financial assistance to them, we advise that you consider exploring alternative financial arrangements, setting strict repayment terms, or requiring additional collateral which may help reduce potential risks and improve the likelihood of repayment.</p>
             </div>
             <div class="btns">
                 <a href="/" id="back-home">Return Home</a>
-                <a href="">Go ahead with loan</a>
+                <!--a href="">Go ahead with loan</a-->
             </div>
         <% } else if (report.atr_level === "Very Weak") { %>
             <div class="result">
@@ -269,26 +272,61 @@
                 <h4 id="grade" class="red"><%= report.atr_level %></h4-->
             </div>
             <div class="illustration">
-                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Illustrations/Do_not_enter_sign-bro.png" alt="weak"> 
             </div>
             <div class="remarks">
-                <p id="vweak">We have assessed <%= loan.borrower.name %>'s financial ability to repay your loan of <%= loan.loan_amount %> on the terms you specified and we have determined that their ability to repay this loan is very weak. This means that they do not have the financial capacity to repay this loan. We strongly recommend you do not extend them this loan. However if you wish to still go ahead and loan them the funds, it should be because they have provided a good-quality collateral (find out what a good-quality collateral is) or you have other reasons to trust that this person will repay the loan.</p>
+                <p>Dear <%= loan.lender.name.split(' ')[0] %>,</p>
+                <p id="vweak">Thank you for taking the time to request and review the creditworthiness report for your potential loan arrangement with <%= loan.borrower.name %>. After our thorough evaluation process, we regret to inform you that <%= loan.borrower.name %>'s capacity to repay this loan has been assessed and determined to be very weak. The assessment of weak financial capacity to repay the loan indicates that the potential borrower faces substantial obstacles in meeting their financial obligations. Our analysis reveals significant factors that may have contributed to their weak capacity, such as limited income, high debt-to-income ratio, history of defaults or missed payments, or lack of assets. While the borrower may have good intentions, their current financial circumstances presents a high-risk and raise concerns about their ability to repay this loan or fulfill their end of this financial arrangement. We advise against giving out this loan or entering into this financial arrangement with <%= loan.borrower.name %>. If you are still compelled to extend financial assistance to them, we advise that you consider exploring alternative financial arrangements, setting strict repayment terms, or requiring additional collateral which may help reduce potential risks and improve the likelihood of repayment.</p>
             </div>
             <div class="btns">
                 <a href="/" id="back-home">Return Home</a>
-                <a href="">Go ahead with loan</a>
+                <!--a href="">Go ahead with loan</a-->
             </div>
                         
         <% } else if (report.atr_level === "Immature Account") { %>
             <div class="result">
-                <h4 style=""><%= loan.borrower.name %>’s financial ability to repay failed as a result of</h4>
+                <h4 style=""><%= loan.borrower.name %>’s credithworthiness assessment failed as a result of</h4>
+                <h4 id="grade" class="red"><%= report.atr_level %></h4>
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Illustrations/Do_not_enter_sign-bro.png" alt="weak"> 
+            </div>
+            <div class="remarks">
+                <p id="immature">Bank account provided by <%= loan.borrower.name %>'s does not meet our criteria for activity maturity for it to be analyzed. To give us sufficient financial data to make a well-informed analysis and prevent fraud,  potential borrowers should provide a mature bank account with at least 8-months of financial activity.</p>
+            </div>
+            <div class="btns">
+                <a href="/" id="">Return Home</a>
+            </div>
+                            
+        <% } else if (report.atr_level === "Bad Karma") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s credithworthiness assessment failed as a result of</h4>
                 <h4 id="grade" class="red"><%= report.atr_level %></h4-->
             </div>
             <div class="illustration">
-                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Do_not_enter_sign-bro.png" alt="weak"> 
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Illustrations/Do_not_enter_sign-bro.png" alt="weak"> 
             </div>
             <div class="remarks">
-                <p id="immature">Bank account provided by <%= loan.borrower.name %>'s does not meet our criteria for activity maturity for it to be analyzed. To give us sufficient financial data to make a well-informed analysis and prevent fraud,  potential borrowers should provide a mature bank account with at least 8-months of financial activity.</p-->
+                <p>Dear <%= loan.lender.name.split(' ')[0] %>,</p>
+                <p id="karma">Thank you for taking the time to request and review the creditworthiness report for your potential loan to <%= loan.borrower.name %>. As part of our thorough evaluation process, we have discovered that the <%= loan.borrower.name %> has been flagged as a bad actor by previous lenders and/or other financial service providers. This is likely as a result of a history of missed payments, defaults, fraud or other negative financial behaviors. We understand the importance of mitigating risk and making informed lending decisions, so based off of our assessment, we strongly advise against entering into any loan arrangement with <%= loan.borrower.name %> unless you have other forms of guarantee that they will repay the loan extended to them according to the terms you set and also ensure they provide good-quality collateral.</p>
+            </div>
+            <div class="btns">
+                <a href="/" id="">Return Home</a>
+            </div>
+                                      
+        <% } else if (report.atr_level === "Poor Credit History") { %>
+            <div class="result">
+                <h4 style=""><%= loan.borrower.name %>’s credithworthiness assessment failed as a result of</h4>
+                <h4 id="grade" class="red"><%= report.atr_level %></h4>
+            </div>
+            <div class="illustration">
+                <img src="https://res.cloudinary.com/dxjqr24gm/image/upload/v1675628462/Keenya/Illustrations/Do_not_enter_sign-bro.png" alt="weak"> 
+            </div>
+            <div class="remarks">
+                <p>Dear <%= loan.lender.name.split(' ')[0] %>,</p>
+                <p id="ecosystem">Thank you for taking the time to request and review the creditworthiness report for your potential loan arrangement to <%= loan.borrower.name %>. As part of our thorough creditworthiness evaluation process, We examined <%= loan.borrower.name %>'s credit history with previous lenders and it has been observed that <%= loan.borrower.name %> does not have a positive track record of timely repayment of credit extended to them. This is likely as a result of missed or delayed payments, defaults, incomplete repayment and other similar negative practises that have been discovered from their credit history check. While we advise against embarking on this loan arrangement with <%= loan.borrower.name %> due to their credit history not reflecting a positive track record, you may go ahead with the loan arrangement ONLY if they have provided you with a solid and appropriate collateral for this arrangement or you have any other reason to as serve guaranty that they will repay this loan if it is given to them.
+                </p>
+                <p>In cases where creditworthiness is a concern, additional security measures should be considered. If <%= loan.borrower.name %> is willing to provide appropriate collateral or involve a qualified guarantor who possesses a solid credit history and is committed to assuming responsibility in the event of default. These options will offer an added layer of protection to you.</p>
             </div>
             <div class="btns">
                 <a href="/" id="">Return Home</a>

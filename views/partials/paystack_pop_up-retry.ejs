@@ -1,0 +1,47 @@
+<script src="https://js.paystack.co/v1/inline.js"></script> 
+<script type="text/javascript">
+	//const paymentForm = document.getElementById('paymentForm');
+    //const newloanbtn = document.getElementById('newloan'); 
+	const paybtn = document.getElementById('pay-btn'); 
+	const launchbtn = document.getElementById('pay-btn'); 
+	const analysisbtn = document.getElementById('analysis-btn');
+    //const data = JSON.parse('<%- JSON.stringify(data) %>');
+  
+    
+    launchbtn.style.display = "none";
+    analysisbtn.style.display = "none";
+
+	function fee(amount) {
+		let fee;
+		if (amount > 30000) { fee = amount * dataH.feeX }
+		else { fee = dataH.feeOrd }	
+		return fee;
+	}
+    
+	paybtn.addEventListener("click", payWithPaystack, false);
+	function payWithPaystack(e) {
+  		e.preventDefault();
+  	 	
+  	 	const efour = fee(dataH.currentloan.loan_amount);
+  		let handler = PaystackPop.setup({
+    		key: dataH.paypublicKey, // Replace with your public key var
+    		email: dataH.currentloan.borrower.email,
+    		amount: efour * 100,
+    		ref: 'Knya'+Math.floor((Math.random() * 1000000000) + 1),
+    	// label: "Optional string that replaces customer email"
+    		onClose: function(){
+      			alert('Window closed.');
+    		},
+    		callback: function(response){
+      			let message = 'Payment complete! Reference: ' + response.reference;
+      			alert(message);
+
+                paybtn.style.display = "none";
+                //analysisbtn.id = "launch-btn"
+      			launchbtn.style.display = "block";
+      		}	
+  });
+
+  handler.openIframe();
+}
+</script>
